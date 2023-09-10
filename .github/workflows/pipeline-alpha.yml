@@ -1,8 +1,8 @@
 name: Pipeline Alpha
-run-name: ${{ github.actor }} requested a new PR 🚀
+run-name: ${{ github.actor }} running alpha CI 🚀
 on:
   push:
-    branches: [develop, chore/*]
+    branches: [chore/*, feature/*, fix/*, hotfix/*]
   pull_request:
     branches: [develop]
 jobs:
