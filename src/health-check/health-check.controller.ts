@@ -10,7 +10,7 @@ import {
 export class HealthCheckController {
   constructor(
     private healthCheckService: HealthCheckService,
-    private MemoryHealthIndicator: MemoryHealthIndicator,
+    private memoryHealthIndicator: MemoryHealthIndicator,
     private httpHealthIndicator: HttpHealthIndicator,
   ) {}
 
@@ -27,5 +27,4 @@ export class HealthCheckController {
         ),
     ]);
   }
-
 }
