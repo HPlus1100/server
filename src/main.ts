@@ -6,7 +6,7 @@ interface EnvironmentVariables {
   PORT: number;
 }
 
-async function bootstrap(): Promise<void> {
+async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
   const configService =
