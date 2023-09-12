@@ -3,7 +3,7 @@ import { TypeOrmModuleOptions } from '@nestjs/typeorm';
 export class TypeOrmConfigService {
   createTypeOrmOptions(): TypeOrmModuleOptions {
     return {
-      type: process.env.DB_TYPE as any,
+      type: process.env.DB_TYPE as never,
       host: process.env.DB_HOST,
       port: parseInt(process.env.DB_PORT),
       username: process.env.DB_USERNAME,

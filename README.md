@@ -1,5 +1,5 @@
 ## Description
-Nestjs 서버입니다.
+Nestjs 서버
 
 # 01-ci-ci-pipeline
 
