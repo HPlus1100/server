@@ -20,4 +20,6 @@ RUN npm run build
 EXPOSE 3000
 
 # 실행
+
 CMD [ "npm", "start" ]
+
