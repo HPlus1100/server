@@ -1,0 +1,73 @@
+name: Deploy to Amazon ECS # workflow 명
+
+on: # 언제 실행되는지 정의
+  merge: # push 일때
+    branches: [ "main" ] # main 브랜치
+	# main 브랜치의 merge할 때 workflow 동작
+
+env: # 환경 설정 나중에 workflow 내에서 ${{ env.ECS_SERVICE }} 로 접근 가능
+  AWS_REGION: ap-northeast-2 # 서울 서버
+  ECR_REPOSITORY: test_repository # 생성한 리포지토리 명
+
+  ECS_SERVICE: MY_ECS_SERVICE # ECS Service 
+  ECS_CLUSTER: MY_ECS_CLUSTER # ECS Cluster 
+  ECS_TASK_DEFINITION: MY_ECS_TASK_DEFINITION # ECS TASK 정의서
+  CONTAINER_NAME: MY_CONTAINER_NAME           # ECS Container
+
+permissions: 
+  contents: read
+
+jobs: # 하나의 처리 단위 적어도 하나의 작업 필요, 기본적으로 동시에 실행
+  deploy: # job 명
+    name: Deploy # 
+    runs-on: ubuntu-latest # 실행환경 지정 ubuntu-latest 
+    environment: alpha # 
+
+    steps: # 작업 단계 
+			# 커맨드나 스크립트 : run
+			# 액션 uses 속성 사용
+    - name: Checkout
+      uses: actions/checkout@v3
+			# 리포지토리 checkout 
+
+    - name: Configure AWS credentials
+      uses: aws-actions/configure-aws-credentials@v1
+      with:
+        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        aws-region: ${{ env.AWS_REGION }}
+			# AWS 보안 자격 인증 - IAM에서 설정한 엑세스키 적용
+
+    - name: Login to Amazon ECR
+      id: login-ecr # ID로 작업 세부내용간 맵핑 가능
+      uses: aws-actions/amazon-ecr-login@v1
+			# AWS 로그인
+
+    - name: Build, tag, and push image to Amazon ECR
+      id: build-image
+      env:
+        ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }} # login-ecr 의 결과물의 registry
+        IMAGE_TAG: ${{ github.sha }}
+      run: |
+        # Build a docker container and
+        # push it to ECR so that it can
+        # be deployed to ECS.
+        docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
+        docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
+        echo "image=$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG" >> $GITHUB_OUTPUT
+
+#    - name: Fill in the new image ID in the Amazon ECS task definition
+#      id: task-def
+#      uses: aws-actions/amazon-ecs-render-task-definition@v1
+#      with:
+#        task-definition: ${{ env.ECS_TASK_DEFINITION }}
+#        container-name: ${{ env.CONTAINER_NAME }}
+#        image: ${{ steps.build-image.outputs.image }}
+
+#    - name: Deploy Amazon ECS task definition
+#      uses: aws-actions/amazon-ecs-deploy-task-definition@v1
+#      with:
+#        task-definition: ${{ steps.task-def.outputs.task-definition }}
+#        service: ${{ env.ECS_SERVICE }}
+#        cluster: ${{ env.ECS_CLUSTER }}
+#        wait-for-service-stability: true
