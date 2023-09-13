@@ -6,6 +6,7 @@ interface EnvironmentVariables {
   PORT: number;
 }
 
+// eslint-disable-next-line @typescript-eslint/explicit-function-return-type
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
