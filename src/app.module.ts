@@ -11,7 +11,6 @@ import { TodoController } from './todo/todo.controller';
 import { TodoService } from './todo/todo.service';
 import { TodosEntity } from './todo/todo.entity';
 
-
 @Module({
   imports: [
     TerminusModule,

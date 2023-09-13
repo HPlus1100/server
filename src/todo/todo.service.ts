@@ -6,7 +6,8 @@ import { TodosEntity } from './todo.entity';
 @Injectable()
 export class TodoService {
   constructor(
-    @InjectRepository(TodosEntity) private todoRepository: Repository<TodosEntity>,
+    @InjectRepository(TodosEntity)
+    private todoRepository: Repository<TodosEntity>,
   ) {}
 
   async findAll(): Promise<TodosEntity[]> {
