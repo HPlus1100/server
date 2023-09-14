@@ -1,9 +1,15 @@
 name: Deploy to Amazon ECS # workflow 명
 
 on: # 언제 실행되는지 정의
+<<<<<<< HEAD:.github/workflows/pipeline-aws-alpha.yml
   merged: # merged 일때
     branches: [ "develop" ] # main 브랜치
     # main 브랜치의 merge할 때 workflow 동작
+=======
+  pull_request: # merged 일때
+    branches: [ "main" ] # main 브랜치
+	# main 브랜치의 merge할 때 workflow 동작
+>>>>>>> 8900b7ac79e41876ac8b0e52f0ed044496a1c068:.github/workflows/piepline-aws-temp.yml
 
 env: # 환경 설정 나중에 workflow 내에서 ${{ env.ECS_SERVICE }} 로 접근 가능
   AWS_REGION: ap-northeast-2 # 서울 서버
