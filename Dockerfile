@@ -1,8 +1,4 @@
-# Node.js 20 이미지를 기반으로 사용
-FROM node:20
-
-# 작업 디렉토리를 설정 - 컨테이너 내부 경로
-WORKDIR /app
+FROM node:18-alpine 
 
 RUN apk update && apk --no-cache add libaio libnsl libc6-compat curl && \
     cd /tmp && \
@@ -19,6 +15,9 @@ RUN apk update && apk --no-cache add libaio libnsl libc6-compat curl && \
     ln -s /lib64/ld-linux-x86-64.so.2 /usr/lib/ld-linux-x86-64.so.2 
 
 ENV LD_LIBRARY_PATH /usr/lib/instantclient
+
+# 작업 디렉토리를 설정 - 컨테이너 내부 경로
+WORKDIR /app
 
 # 호스트 머신에서 컨테이너로 package.json 및 package-lock.json 파일을 복사
 COPY package*.json ./
