@@ -7,7 +7,6 @@ on: # 언제 실행되는지 정의
 
 env: # 환경 설정 나중에 workflow 내에서 ${{ env.ECS_SERVICE }} 로 접근 가능
   AWS_REGION: ap-northeast-2 # 서울 서버
-  ECR_REGISTRY: 977344766562.dkr.ecr.ap-northeast-2.amazonaws.com/dev_repository
   ECR_REPOSITORY: dev_repository # 생성한 리포지토리 명
 
   ECS_SERVICE: MY_ECS_SERVICE # ECS Service 
@@ -17,9 +16,9 @@ env: # 환경 설정 나중에 workflow 내에서 ${{ env.ECS_SERVICE }} 로 접
 
 jobs: # 하나의 처리 단위 적어도 하나의 작업 필요, 기본적으로 동시에 실행
   deploy: # job 명
-    name: Deploy # 
+    name: Deploy  
     runs-on: ubuntu-latest # 실행환경 지정 ubuntu-latest 
-    environment: alpha # 
+    environment: alpha 
 
     steps: # 작업 단계 : 커맨드나 스크립트 : run , 액션 uses 속성 사용
     - name: Checkout
