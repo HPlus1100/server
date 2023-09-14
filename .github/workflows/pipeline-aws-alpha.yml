@@ -1,7 +1,7 @@
 name: Deploy to Amazon ECS # workflow 명
 
 on: # 언제 실행되는지 정의
-  pursh:
+  push:
     branches: [ "main" ] # main 브랜치
 	# main 브랜치의 merge할 때 workflow 동작
 
