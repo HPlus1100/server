@@ -3,7 +3,7 @@ name: Deploy to Amazon ECS # workflow 명
 on: # 언제 실행되는지 정의
   push:
     branches: 
-    	- develop
+    - develop
 
 env: # 환경 설정 나중에 workflow 내에서 ${{ env.ECS_SERVICE }} 로 접근 가능
   AWS_REGION: ap-northeast-2 # 서울 서버
