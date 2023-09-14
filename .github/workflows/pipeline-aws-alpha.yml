@@ -40,7 +40,7 @@ jobs: # 하나의 처리 단위 적어도 하나의 작업 필요, 기본적으�
       env:
         ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }} # login-ecr 의 결과물의 registry
         IMAGE_TAG: ${{ github.sha }}
-      run: 
+      run: |
         # Build a docker container and
         # push it to ECR so that it can
         # be deployed to ECS.
