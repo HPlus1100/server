@@ -2,12 +2,13 @@ name: Deploy to Amazon ECS # workflow 명
 
 on: # 언제 실행되는지 정의
   merged: # merged 일때
-    branches: [ "main" ] # main 브랜치
-	# main 브랜치의 merge할 때 workflow 동작
+    branches: [ "develop" ] # main 브랜치
+    # main 브랜치의 merge할 때 workflow 동작
 
 env: # 환경 설정 나중에 workflow 내에서 ${{ env.ECS_SERVICE }} 로 접근 가능
   AWS_REGION: ap-northeast-2 # 서울 서버
-  ECR_REPOSITORY: test_repository # 생성한 리포지토리 명
+  ECR_REGISTRY: 977344766562.dkr.ecr.ap-northeast-2.amazonaws.com/dev_repository
+  ECR_REPOSITORY: dev_repository # 생성한 리포지토리 명
 
   ECS_SERVICE: MY_ECS_SERVICE # ECS Service 
   ECS_CLUSTER: MY_ECS_CLUSTER # ECS Cluster 
