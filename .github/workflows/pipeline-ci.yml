@@ -3,8 +3,7 @@ run-name: ${{ github.actor }} running alpha CI 🚀
 on:
   push:
     branches: [chore/*, feature/*, fix/*, hotfix/*]
-  pull_request:
-    branches: [develop]
+
 jobs:
   Explore-GitHub-Actions:
     runs-on: ubuntu-latest
