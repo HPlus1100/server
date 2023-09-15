@@ -1,7 +1,6 @@
 import { TypeOrmModuleOptions } from '@nestjs/typeorm';
 
 export class TypeOrmConfigService {
-
   createTypeOrmOptions(): TypeOrmModuleOptions {
     return {
       type: process.env.DB_TYPE as never,
