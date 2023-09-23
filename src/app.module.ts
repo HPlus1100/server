@@ -5,7 +5,6 @@ import { HealthCheckController } from './health-check/health-check.controller';
 import { TerminusModule } from '@nestjs/terminus';
 import { HttpModule } from '@nestjs/axios';
 import { ConfigModule } from '@nestjs/config';
-import DatabaseConfig from './config/database.config';
 
 @Module({
   imports: [
@@ -14,7 +13,6 @@ import DatabaseConfig from './config/database.config';
     ConfigModule.forRoot({
       envFilePath: `.env.${process.env.NODE_ENV}`,
       isGlobal: true,
-      load: [DatabaseConfig],
     }),
   ],
   controllers: [AppController, HealthCheckController],
