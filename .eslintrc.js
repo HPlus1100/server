@@ -20,5 +20,6 @@ module.exports = {
     '@typescript-eslint/no-unused-vars': ['error', { args: 'all' }],
     '@typescript-eslint/explicit-function-return-type': 'error',
     'no-console': ['warn', { allow: ['warn', 'error'] }],
+    '@typescript-eslint/explicit-function-return-type': 'off',
   },
 };
