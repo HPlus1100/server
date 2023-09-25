@@ -1,22 +1,21 @@
 import { Controller, Get, Post } from '@nestjs/common';
-// import { CallService } from './call.service';
+import { CallService } from './call.service';
 
 @Controller('call')
 export class CallController {
-  //   constructor(private readonly callService: CallService) {}
+  constructor(private readonly callService: CallService) {}
   @Get('/records')
   getAllPastCallRecords(): string {
-    // return this.callService.getAllPastCallRecords();
-    return 'This action returns all calls matched before';
+    return this.callService.getAllPastCallRecords();
   }
 
   @Post('/create')
   createCall(): string {
-    return 'This action creates a new call';
+    return this.callService.createCall();
   }
 
   @Post('/success')
   successCall(): string {
-    return 'This action returns a success call';
+    return this.callService.successCall();
   }
 }
