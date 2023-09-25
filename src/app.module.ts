@@ -5,6 +5,7 @@ import { HealthCheckController } from './health-check/health-check.controller';
 import { TerminusModule } from '@nestjs/terminus';
 import { HttpModule } from '@nestjs/axios';
 import { ConfigModule } from '@nestjs/config';
+import { CallModule } from './call/call.module';
 
 @Module({
   imports: [
@@ -14,6 +15,7 @@ import { ConfigModule } from '@nestjs/config';
       envFilePath: `.env.${process.env.NODE_ENV}`,
       isGlobal: true,
     }),
+    CallModule,
   ],
   controllers: [AppController, HealthCheckController],
   providers: [AppService],
