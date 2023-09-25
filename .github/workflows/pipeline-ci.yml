@@ -1,4 +1,4 @@
-name: Pipeline Alpha
+name: Pipeline CI
 run-name: ${{ github.actor }} running alpha CI 🚀
 on:
   push:
@@ -19,7 +19,7 @@ jobs:
           node-version: ${{ matrix.node-version }}
 
       - name: Install dependencies
-        run: npm i yarn
+        run: yarn install
 
       - name: Build
         run: yarn build --if-present
