@@ -31,7 +31,7 @@ services:
       - app-tier
     volumes:
       - ./db/postgres:/var/lib/postgres
-      # - ./postgres/:/docker-entrypoint-initdb.d/
+      - ./postgres/:/docker-entrypoint-initdb.d/
 
 volumes:
   postgres:
