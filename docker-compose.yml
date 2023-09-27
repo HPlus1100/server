@@ -10,10 +10,11 @@ services:
       - .:/usr/src/app
     environment:
       - NODE_ENV=development
+      - DB_HOST=postgres
     networks:
       - app-tier
     depends_on:
-      - postgresql
+      - postgres
 
   postgres:
     image: postgres:latest
