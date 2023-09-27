@@ -7,6 +7,7 @@ import { HttpModule } from '@nestjs/axios';
 import { ConfigModule } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { TypeOrmConfigService } from './config/typeorm.config';
+import { TestModule } from './test/test.module';
 
 @Module({
   imports: [
@@ -20,6 +21,7 @@ import { TypeOrmConfigService } from './config/typeorm.config';
       imports: [ConfigModule],
       useClass: TypeOrmConfigService,
     }),
+    TestModule,
   ],
   controllers: [AppController, HealthCheckController],
   providers: [AppService],
