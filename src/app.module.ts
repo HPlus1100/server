@@ -8,7 +8,7 @@ import { ConfigModule } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { TypeOrmConfigService } from './config/typeorm.config';
 import { CallModule } from './call/call.module';
-console.log(`${__dirname}/config/env/.env.${process.env.NODE_ENV}`);
+
 @Module({
   imports: [
     TerminusModule,
