@@ -5,22 +5,27 @@ import { HealthCheckController } from './health-check/health-check.controller';
 import { TerminusModule } from '@nestjs/terminus';
 import { HttpModule } from '@nestjs/axios';
 import { ConfigModule } from '@nestjs/config';
+import { TypeOrmModule } from '@nestjs/typeorm';
+import { TypeOrmConfigService } from './config/typeorm.config';
+import { CallModule } from './call/call.module';
 import { AuthModule } from './auth/auth.module';
-import { UserService } from './user/user.service';
-import { UserModule } from './user/user.module';
 
 @Module({
-  imports: [
-    TerminusModule,
-    HttpModule,
-    ConfigModule.forRoot({
-      envFilePath: `.env.${process.env.NODE_ENV}`,
-      isGlobal: true,
-    }),
-    AuthModule,
-    UserModule,
-  ],
-  controllers: [AppController, HealthCheckController],
-  providers: [AppService, UserService],
+	imports: [
+		TerminusModule,
+		HttpModule,
+		ConfigModule.forRoot({
+			envFilePath: [`${__dirname}/config/env/.env.${process.env.NODE_ENV}`],
+			isGlobal: true,
+		}),
+		TypeOrmModule.forRootAsync({
+			imports: [ConfigModule],
+			useClass: TypeOrmConfigService,
+		}),
+		CallModule,
+		AuthModule,
+	],
+	controllers: [AppController, HealthCheckController],
+	providers: [AppService],
 })
 export class AppModule {}

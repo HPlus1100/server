@@ -2,7 +2,7 @@
 FROM node:18-alpine
 
 # 작업 디렉토리를 설정 - 컨테이너 내부 경로
-WORKDIR /app
+WORKDIR  /usr/src/app
 
 # 호스트 머신에서 컨테이너로 package.json 및 package-lock.json 파일을 복사
 COPY package*.json ./
