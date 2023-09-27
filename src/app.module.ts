@@ -5,9 +5,10 @@ import { HealthCheckController } from './health-check/health-check.controller';
 import { TerminusModule } from '@nestjs/terminus';
 import { HttpModule } from '@nestjs/axios';
 import { ConfigModule } from '@nestjs/config';
-import { TaxiModule } from './taxi/taxi.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { TypeOrmConfigService } from './config/typeorm.config';
+import { CallModule } from './call/call.module';
+import { TaxiModule } from './taxi/taxi.module';
 
 @Module({
   imports: [
@@ -17,11 +18,12 @@ import { TypeOrmConfigService } from './config/typeorm.config';
       envFilePath: [`${__dirname}/config/env/.env.${process.env.NODE_ENV}`],
       isGlobal: true,
     }),
-    TaxiModule,
     TypeOrmModule.forRootAsync({
       imports: [ConfigModule],
       useClass: TypeOrmConfigService,
     }),
+    CallModule,
+    TaxiModule,
   ],
   controllers: [AppController, HealthCheckController],
   providers: [AppService],
