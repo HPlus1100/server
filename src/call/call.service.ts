@@ -1,9 +1,11 @@
 import { Injectable } from '@nestjs/common';
+import { CallRecord } from './call.model';
 
 @Injectable()
 export class CallService {
-  getAllPastCallRecords(): string {
-    return 'This action returns all calls matched before';
+  private callRecords: CallRecord[] = [];
+  getAllPastCallRecords(): CallRecord[] {
+    return this.callRecords;
   }
 
   createCall(): string {
