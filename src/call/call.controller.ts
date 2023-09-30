@@ -1,11 +1,13 @@
-import { Controller, Get, Post } from '@nestjs/common';
+import { Body, Controller, Get, Post } from '@nestjs/common';
 import { CallService } from './call.service';
+import { Call, CallRecord } from './call.model';
+import { CreateCallDto } from './dto/createCall.dto';
 
 @Controller('call')
 export class CallController {
   constructor(private readonly callService: CallService) {}
   @Get('/records')
-  getAllPastCallRecords(): string {
+  getAllPastCallRecords(): CallRecord[] {
     /**
      * 1. Controller, DTO
      * DTO가 어떻게 될까?
@@ -17,8 +19,8 @@ export class CallController {
     return this.callService.getAllPastCallRecords();
   }
 
-  @Post('/create')
-  createCall(): string {
+  @Post('/')
+  createCall(@Body() createCallDto: CreateCallDto): Call[] {
     /**
      * 1. Controller, DTO
      * DTO가 어떻게 될까?
@@ -46,7 +48,12 @@ export class CallController {
      * 4. return
      * 매칭이 되었으면, 매칭 정보를 리턴해주자.
      */
-    return this.callService.createCall();
+    return this.callService.createCall(createCallDto);
+  }
+
+  @Post('/callRecord')
+  createCallRecord(): string {
+    return this.callService.createCallRecord();
   }
 
   @Post('/success')
