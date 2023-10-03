@@ -26,7 +26,7 @@ export class CallController {
   }
 
   @Get('/:id')
-  getCallByUserId(@Param('id') userId: string): Promise<Call> {
+  getCallsByUserId(@Param('id') userId: string): Promise<Call[]> {
     return this.callService.getCallsByUserId(userId);
   }
 
@@ -66,7 +66,7 @@ export class CallController {
 
   @Delete('/:id')
   deleteCallByUserId(@Param('id') id: string) {
-    return this.callService.deleteCallByUserId(id);
+    return this.callService.deleteCallsByUserId(id);
   }
 
   // @Post('/callRecord')

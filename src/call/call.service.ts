@@ -18,8 +18,8 @@ export class CallService {
   }
 
   @UsePipes(ValidationPipe)
-  async getCallsByUserId(userId: string): Promise<Call> {
-    const found = await this.callRepository.findOne({
+  async getCallsByUserId(userId: string): Promise<Call[]> {
+    const found = await this.callRepository.find({
       where: {
         userId: userId,
       },
@@ -43,12 +43,11 @@ export class CallService {
     return call;
   }
 
-  async deleteCallByUserId(userId: string): Promise<string> {
-    const found = await this.getCallsByUserId(userId);
-    if (!found) {
+  async deleteCallsByUserId(userId: string): Promise<string> {
+    const result = await this.callRepository.delete({ userId: userId });
+    if (result.affected === 0) {
       throw new NotFoundException(`Can't find user with id ${userId}`);
     }
-    this.callRepository.remove(found);
     return `Delete user with id ${userId}`;
   }
 
