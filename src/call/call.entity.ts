@@ -1,6 +1,11 @@
-import { BaseEntity, Column, PrimaryGeneratedColumn } from 'typeorm';
+import { BaseEntity, Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 import { TaxiType } from './types/taxi';
 
+@Entity({
+  orderBy: {
+    createdAt: 'DESC',
+  },
+})
 export class Call extends BaseEntity {
   @PrimaryGeneratedColumn()
   id: string;
