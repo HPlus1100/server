@@ -9,16 +9,17 @@ services:
     volumes:
       - .:/usr/src/app
     environment:
-      - name=value
+      - NODE_ENV=development
+      - DB_HOST=postgres
     networks:
       - app-tier
     depends_on:
-      - postgresql
+      - postgres
 
-  postgresql:
+  postgres:
     image: postgres:latest
     restart: always
-    container_name: postgresql
+    container_name: postgres
     ports:
       - 5432:5432
     environment:
@@ -30,11 +31,11 @@ services:
     networks:
       - app-tier
     volumes:
-      - ./db/postgresql:/var/lib/postgresql
-      - ./postgresql/:/docker-entrypoint-initdb.d/
+      - ./db/postgres:/var/lib/postgres
+      - ./postgres/:/docker-entrypoint-initdb.d/
 
 volumes:
-  mysql:
+  postgres:
     driver: local
 
 networks:
