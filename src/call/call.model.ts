@@ -1,7 +1,7 @@
 export interface Call {
   id: string;
   userId: string;
-  driverId: string;
+  taxiType: string;
   createdAt: Date;
   estimatedTime: number;
   estimatedFare: number;

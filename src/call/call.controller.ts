@@ -1,7 +1,8 @@
-import { Body, Controller, Get, Post } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Post } from '@nestjs/common';
 import { CallService } from './call.service';
 import { Call, CallRecord } from './call.model';
 import { CreateCallDto } from './dto/createCall.dto';
+import { CallValidationPipe } from './pipes/callValidation.pipe';
 
 @Controller('call')
 export class CallController {
@@ -19,8 +20,18 @@ export class CallController {
     return this.callService.getAllPastCallRecords();
   }
 
+  @Get('/')
+  getAllCalls(): Call[] {
+    return this.callService.getAllCalls();
+  }
+
+  @Get('/:id')
+  getCallByUserId(@Param('id') id: string) {
+    return this.callService.getCallsByUserId(id);
+  }
+
   @Post('/')
-  createCall(@Body() createCallDto: CreateCallDto): Call[] {
+  createCall(@Body(CallValidationPipe) createCallDto: CreateCallDto): Call[] {
     /**
      * 1. Controller, DTO
      * DTO가 어떻게 될까?
@@ -49,6 +60,11 @@ export class CallController {
      * 매칭이 되었으면, 매칭 정보를 리턴해주자.
      */
     return this.callService.createCall(createCallDto);
+  }
+
+  @Delete('/:id')
+  deleteCallByUserId(@Param('id') id: string) {
+    return this.callService.deleteCallByUserId(id);
   }
 
   @Post('/callRecord')

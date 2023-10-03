@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { Call, CallRecord } from './call.model';
 import { v4 as uuid } from 'uuid';
 import { CreateCallDto } from './dto/createCall.dto';
@@ -11,18 +11,39 @@ export class CallService {
     return this.callRecords;
   }
 
+  getAllCalls() {
+    return this.calls;
+  }
+  getCallsByUserId(id: string) {
+    const found = this.calls.find((call) => call.userId === id);
+    if (!found) {
+      throw new NotFoundException(`Can't find user with id ${id}`);
+    }
+    return found;
+  }
+
   createCall(createCallDto: CreateCallDto) {
-    const { userId, driverId } = createCallDto;
+    const { userId, taxiType } = createCallDto;
     const call: Call = {
       id: uuid(),
       userId: userId,
-      driverId: driverId,
+      taxiType: taxiType,
       createdAt: new Date(),
       estimatedTime: 120,
       estimatedFare: 1000,
     };
     this.calls.push(call);
     return this.calls;
+  }
+
+  deleteCallByUserId(id: string) {
+    const found = this.getCallsByUserId(id);
+    if (!found) {
+      throw new NotFoundException(`Can't find user with id ${id}`);
+    }
+    this.calls = this.calls.filter((call) => call.userId !== found.userId);
+
+    return `Delete user with id ${id}`;
   }
 
   createCallRecord(): string {
