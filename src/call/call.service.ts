@@ -1,56 +1,58 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
-import { Call, CallRecord } from './call.model';
-import { v4 as uuid } from 'uuid';
+import {
+  Injectable,
+  NotFoundException,
+  UsePipes,
+  ValidationPipe,
+} from '@nestjs/common';
 import { CreateCallDto } from './dto/createCall.dto';
+import { CallRepository } from './call.repository';
+import { Call } from './call.entity';
 
 @Injectable()
 export class CallService {
-  private callRecords: CallRecord[] = [];
-  private calls: Call[] = [];
-  getAllPastCallRecords(): CallRecord[] {
-    return this.callRecords;
+  constructor(private callRepository: CallRepository) {}
+
+  @UsePipes(ValidationPipe)
+  async getAllCalls(): Promise<Call[]> {
+    return await this.callRepository.find();
   }
 
-  getAllCalls() {
-    return this.calls;
-  }
-  getCallsByUserId(id: string) {
-    const found = this.calls.find((call) => call.userId === id);
+  @UsePipes(ValidationPipe)
+  async getCallsByUserId(userId: string): Promise<Call> {
+    const found = await this.callRepository.findOne({
+      where: {
+        userId: userId,
+      },
+    });
     if (!found) {
-      throw new NotFoundException(`Can't find user with id ${id}`);
+      throw new NotFoundException(`Can't find user with userId ${userId}`);
     }
     return found;
   }
 
-  createCall(createCallDto: CreateCallDto) {
+  async createCall(createCallDto: CreateCallDto): Promise<Call> {
     const { userId, taxiType } = createCallDto;
-    const call: Call = {
-      id: uuid(),
+    const call = this.callRepository.create({
       userId: userId,
       taxiType: taxiType,
       createdAt: new Date(),
       estimatedTime: 120,
       estimatedFare: 1000,
-    };
-    this.calls.push(call);
-    return this.calls;
+    });
+    await this.callRepository.save(call);
+    return call;
   }
 
-  deleteCallByUserId(id: string) {
-    const found = this.getCallsByUserId(id);
+  async deleteCallByUserId(userId: string): Promise<string> {
+    const found = await this.getCallsByUserId(userId);
     if (!found) {
-      throw new NotFoundException(`Can't find user with id ${id}`);
+      throw new NotFoundException(`Can't find user with id ${userId}`);
     }
-    this.calls = this.calls.filter((call) => call.userId !== found.userId);
-
-    return `Delete user with id ${id}`;
+    this.callRepository.remove(found);
+    return `Delete user with id ${userId}`;
   }
 
-  createCallRecord(): string {
-    return 'This action creates a new call record';
-  }
-
-  successCall(): string {
-    return 'This action returns a success call';
-  }
+  // createCallRecord(): string {
+  //   return 'This action creates a new call record';
+  // }
 }
