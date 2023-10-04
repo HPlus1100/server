@@ -1,4 +1,17 @@
-import {Entity, PrimaryGeneratedColumn, Column, BaseEntity, CreateDateColumn, UpdateDateColumn} from "typeorm";
+import {
+  Entity,
+  PrimaryGeneratedColumn,
+  Column,
+  BaseEntity,
+  CreateDateColumn,
+  UpdateDateColumn,
+} from 'typeorm';
+
+export enum BillingStatus {
+  PAID = 'PAID',
+  PENDING = 'PENDING',
+  FAILED = 'FAILED',
+}
 
 @Entity('Billing')
 export class Billing extends BaseEntity {
@@ -7,10 +20,10 @@ export class Billing extends BaseEntity {
 
   @Column('numeric', { nullable: false })
   amount: number;
-  
+
   // customer: Customer; ManyToOne관계
   // driver: Driver; ManyToOne관계
-  
+
   @Column('bigint', { nullable: true })
   distance: number;
 
@@ -21,17 +34,11 @@ export class Billing extends BaseEntity {
     comment: '결제상태',
   })
   status: BillingStatus;
-  
+
   @CreateDateColumn({ type: 'timestamptz', default: () => 'CURRENT_TIMESTAMP' })
   createdTime: Date;
-  
+
   @UpdateDateColumn({ type: 'timestamptz', default: () => 'CURRENT_TIMESTAMP' })
   updatedTime: Date;
 }
 
-
-export enum BillingStatus {
-  PAID = 'PAID',
-  PENDING = 'PENDING',
-  FAILED = 'FAILED',
-}
