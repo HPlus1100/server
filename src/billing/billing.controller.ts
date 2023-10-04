@@ -12,7 +12,7 @@ export class BillingController {
    * @returns {status: string; amount: number; ...otherData} - 결제결과, 처리된금액
    */
   @Post('process')
-  async processBillingPayment(): Promise<string> {
+  async processBillingPayment() {
     /**
      * 의문 1. 결제 관련 로직을 비동기로 처리하는게 옳은 것인가..?
      * -> 결제 요청같은경우, 확장성 및 UX 측면에서는 비동기가맞으나, 실제 금액이 처리되는 앱은 아니다보니, 고민을 해봐야 할 것 같음.
