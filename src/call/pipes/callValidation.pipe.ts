@@ -2,7 +2,7 @@ import { BadRequestException, PipeTransform } from '@nestjs/common';
 import { TaxiType } from '../types/taxi';
 
 export class CallValidationPipe implements PipeTransform {
-  readonly TaxiTypes: Array<TaxiType> = ['regular', 'blue', 'black'];
+  readonly TaxiTypes: Array<TaxiType> = ['NORMAL', 'LUXURY', 'DELUXE'];
 
   transform(value) {
     if (!this.isTaxiTypeValid(value.taxiType)) {

@@ -3,9 +3,11 @@ import {
   Column,
   Entity,
   PrimaryGeneratedColumn,
-  Timestamp,
+  CreateDateColumn,
+  UpdateDateColumn,
 } from 'typeorm';
 import { CallStatus, TaxiInfo } from './types/taxi';
+import { UserLocation } from './types/location';
 
 @Entity({
   orderBy: {
@@ -23,14 +25,14 @@ export class Call extends BaseEntity {
   @Column({ type: 'bigint' })
   customerNo: string;
 
-  @Column()
+  @Column({ type: 'jsonb' })
   taxi: TaxiInfo;
 
-  @Column()
-  departure: Location;
+  @Column({ type: 'jsonb' })
+  departure: UserLocation;
 
-  @Column()
-  arrival: Location;
+  @Column({ type: 'jsonb' })
+  arrival: UserLocation;
 
   @Column()
   fare: number;
@@ -41,12 +43,21 @@ export class Call extends BaseEntity {
   @Column()
   arrivalTime: Date;
 
-  @Column()
+  @CreateDateColumn({
+    type: 'timestamp',
+    default: () => 'CURRENT_TIMESTAMP',
+  })
   matchingTime: Date;
 
-  @Column()
-  createdAt: Timestamp;
+  @CreateDateColumn({
+    type: 'timestamp',
+    default: () => 'CURRENT_TIMESTAMP',
+  })
+  createdAt: Date;
 
-  @Column()
-  updatedAt: Timestamp;
+  @UpdateDateColumn({
+    type: 'timestamp',
+    default: () => 'CURRENT_TIMESTAMP',
+  })
+  updatedAt: Date;
 }
