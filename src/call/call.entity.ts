@@ -1,5 +1,11 @@
-import { BaseEntity, Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
-import { TaxiType } from './types/taxi';
+import {
+  BaseEntity,
+  Column,
+  Entity,
+  PrimaryGeneratedColumn,
+  Timestamp,
+} from 'typeorm';
+import { CallStatus, TaxiInfo } from './types/taxi';
 
 @Entity({
   orderBy: {
@@ -7,21 +13,40 @@ import { TaxiType } from './types/taxi';
   },
 })
 export class Call extends BaseEntity {
-  @PrimaryGeneratedColumn()
-  id: string;
+  // typeorm 권장사항
+  @PrimaryGeneratedColumn({ type: 'bigint' })
+  no: string;
 
   @Column()
-  userId: string;
+  status: CallStatus;
+
+  @Column({ type: 'bigint' })
+  customerNo: string;
 
   @Column()
-  taxiType: TaxiType;
+  taxi: TaxiInfo;
 
   @Column()
-  createdAt: Date;
+  departure: Location;
 
   @Column()
-  estimatedTime: number;
+  arrival: Location;
 
   @Column()
-  estimatedFare: number;
+  fare: number;
+
+  @Column()
+  departureTime: Date;
+
+  @Column()
+  arrivalTime: Date;
+
+  @Column()
+  matchingTime: Date;
+
+  @Column()
+  createdAt: Timestamp;
+
+  @Column()
+  updatedAt: Timestamp;
 }
