@@ -1,24 +1,39 @@
-import { Controller, Get, Post } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Post } from '@nestjs/common';
 import { CallService } from './call.service';
+import { CreateCallDto } from './dto/createCall.dto';
+import { CallValidationPipe } from './pipes/callValidation.pipe';
+import { Call } from './call.entity';
 
 @Controller('call')
 export class CallController {
   constructor(private readonly callService: CallService) {}
-  @Get('/records')
-  getAllPastCallRecords(): string {
-    /**
-     * 1. Controller, DTO
-     * DTO가 어떻게 될까?
-     * {유저 id}가 있어야 겠지?
-     *
-     * 2. Service
-     *select all 하는 component가 필요하다.
-     */
-    return this.callService.getAllPastCallRecords();
+  // @Get('/records')
+  // getAllPastCallRecords(): CallRecord[] {
+  //   /**
+  //    * 1. Controller, DTO
+  //    * DTO가 어떻게 될까?
+  //    * {유저 id}가 있어야 겠지?
+  //    *
+  //    * 2. Service
+  //    *select all 하는 component가 필요하다.
+  //    */
+  //   return this.callService.getAllPastCallRecords();
+  // }
+
+  @Get('/')
+  getAllCalls(): Promise<Call[]> {
+    return this.callService.getAllCalls();
   }
 
-  @Post('/create')
-  createCall(): string {
+  @Get('/:id')
+  getCallsByUserId(@Param('id') userId: string): Promise<Call[]> {
+    return this.callService.getCallsByUserId(userId);
+  }
+
+  @Post('/')
+  createCall(
+    @Body(CallValidationPipe) createCallDto: CreateCallDto,
+  ): Promise<Call> {
     /**
      * 1. Controller, DTO
      * DTO가 어떻게 될까?
@@ -46,17 +61,16 @@ export class CallController {
      * 4. return
      * 매칭이 되었으면, 매칭 정보를 리턴해주자.
      */
-    return this.callService.createCall();
+    return this.callService.createCall(createCallDto);
   }
 
-  @Post('/success')
-  successCall(): string {
-    /**
-     * 얘가 필요한가?
-     * 이친구는 매칭이 되었을 때, 매칭 정보를 리턴해주는데
-     * 그렇다면 위의 createCall의 아웃풋 DTO와 동일하다.
-     * 그렇다면 필요 없다.
-     */
-    return this.callService.successCall();
+  @Delete('/:id')
+  deleteCallByUserId(@Param('id') id: string) {
+    return this.callService.deleteCallsByUserId(id);
   }
+
+  // @Post('/callRecord')
+  // createCallRecord(): string {
+  //   return this.callService.createCallRecord();
+  // }
 }
