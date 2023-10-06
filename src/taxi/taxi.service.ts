@@ -1,24 +1,40 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
 import { CreateTaxiDto } from './dto/create-taxi.dto';
 import { UpdateTaxiDto } from './dto/update-taxi.dto';
+import { Taxi } from './taxi.entity';
+import { TaxiRepository } from './taxi.repository';
 
 @Injectable()
 export class TaxiService {
+  constructor(
+    @InjectRepository(TaxiRepository)
+    private taxiRepository: TaxiRepository,
+  ) {}
+
   // 전체 택시 정보 조회
-  getAllTaxiInfo(): string {
+  async getAllTaxiInfo(): Promise<Taxi[]> {
     // 사용자 권한 확인
-    return 'return all taxi info';
+
+    const AllTaxiInfo = await this.taxiRepository.find();
+
+    return AllTaxiInfo;
   }
 
   // 택시 Id로 택시 정보 조회
-  getTaxiInfoById(taxiId: number): string {
+  async getTaxiInfoById(taxiId: number): Promise<Taxi> {
     // 사용자 권한 확인
     // 택시 id 존재 확인
-    return `return taxi info by id : ${taxiId}`;
+
+    const taxiInfo = await this.taxiRepository.findOneBy({
+      id: taxiId,
+    });
+
+    return taxiInfo;
   }
 
   // 택시 정보 등록
-  createTaxiInfo(taxiInfo: CreateTaxiDto): string {
+  async createTaxiInfo(createTaxiDto: CreateTaxiDto): Promise<Taxi> {
     // 사용자 권한 확인
     /**
      * 파라미터 확인
@@ -30,11 +46,21 @@ export class TaxiService {
      *  => 차량 번호 확인
      */
     // 택시 id 생성
-    return `create taxi info ${taxiInfo}`;
+
+    const newTaxiInfo = this.taxiRepository.create({
+      ...createTaxiDto,
+    });
+
+    await this.taxiRepository.save(newTaxiInfo);
+
+    return newTaxiInfo;
   }
 
   // 택시 정보 수정
-  updateTaxiInfoById(taxiId: number, taxiInfo: UpdateTaxiDto): string {
+  async updateTaxiInfoById(
+    taxiId: number,
+    updateTaxiDto: UpdateTaxiDto,
+  ): Promise<string> {
     // 사용자 권한 확인
     /**
      * 파라미터 확인
@@ -47,13 +73,28 @@ export class TaxiService {
      */
     // 택시 id 존재 확인
 
-    return `update taxi info by id : ${taxiId}, ${taxiInfo}`;
+    await this.taxiRepository.update(taxiId, {
+      ...updateTaxiDto,
+    });
+
+    // TODO return 정의 필요
+    return `update taxi info by id : ${taxiId}, ${updateTaxiDto}`;
   }
 
   // 택시 정보 삭제
-  deleteTaxiInfoById(taxiId: number): string {
+  async deleteTaxiInfoById(taxiId: number): Promise<string> {
     // 사용자 권한 확인
     // 택시 id 존재 확인
+
+    const result = await this.taxiRepository.delete(taxiId);
+
+    // delete return 값 -> DeleteResult {raw : [], affected : 1}
+    // delete가 성공할 경우 affected의 값이 1로 옮
+    if (result.affected === 0) {
+      throw new NotFoundException(`${taxiId} is not exist`);
+    }
+
+    // TODO return 정의 필요
     return `delete taxi info by id : ${taxiId}`;
   }
 }
