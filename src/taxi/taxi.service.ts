@@ -1,5 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { CreateTaxiDto } from './dto/create-taxi.dto';
+import { UpdateTaxiDto } from './dto/update-taxi.dto';
 
 @Injectable()
 export class TaxiService {
@@ -10,7 +11,7 @@ export class TaxiService {
   }
 
   // 택시 Id로 택시 정보 조회
-  getTaxiInfoById(taxiId: string): string {
+  getTaxiInfoById(taxiId: number): string {
     // 사용자 권한 확인
     // 택시 id 존재 확인
     return `return taxi info by id : ${taxiId}`;
@@ -33,7 +34,7 @@ export class TaxiService {
   }
 
   // 택시 정보 수정
-  updateTaxiInfoById(taxiId: string): string {
+  updateTaxiInfoById(taxiId: number, taxiInfo: UpdateTaxiDto): string {
     // 사용자 권한 확인
     /**
      * 파라미터 확인
@@ -46,11 +47,11 @@ export class TaxiService {
      */
     // 택시 id 존재 확인
 
-    return `update taxi info by id : ${taxiId}`;
+    return `update taxi info by id : ${taxiId}, ${taxiInfo}`;
   }
 
   // 택시 정보 삭제
-  deleteTaxiInfoById(taxiId: string): string {
+  deleteTaxiInfoById(taxiId: number): string {
     // 사용자 권한 확인
     // 택시 id 존재 확인
     return `delete taxi info by id : ${taxiId}`;
