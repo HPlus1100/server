@@ -15,7 +15,7 @@ import { UserLocation } from './types/location';
   },
 })
 export class Call extends BaseEntity {
-  // typeorm 권장사항
+  // typeorm 권장사항 - type은 string을 쓰고, 컬럼의 타입은 bigint를 쓰는 것이 좋다.
   @PrimaryGeneratedColumn({ type: 'bigint' })
   no: string;
 
@@ -24,6 +24,9 @@ export class Call extends BaseEntity {
 
   @Column({ type: 'bigint' })
   customerNo: string;
+
+  @Column({ type: 'bigint' })
+  driverNo: string;
 
   @Column({ type: 'jsonb' })
   taxi: TaxiInfo;

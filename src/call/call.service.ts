@@ -1,8 +1,15 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import {
+  Injectable,
+  NotFoundException,
+  UsePipes,
+  ValidationPipe,
+} from '@nestjs/common';
 import { CreateCallDto } from './dto/createCall.dto';
 import { CallRepository } from './call.repository';
 import { TaxiInfo } from './types/taxi';
 import { Call } from './call.entity';
+import { ActiveCallForDriverDto } from './dto/response/activeCallForDriver.dto';
+import { plainToInstance } from 'class-transformer';
 
 @Injectable()
 export class CallService {
@@ -33,19 +40,19 @@ export class CallService {
     const availableDrivers = [
       {
         no: 'taxi-1',
-        driverNo: 'driver-1',
+        driverNo: '1',
         type: 'DELUXE',
         carNum: '서울 12 가 1234',
       },
       {
         no: 'taxi-2',
-        driverNo: 'driver-2',
+        driverNo: '2',
         type: 'NORMAL',
         carNum: '서울 12 가 1235',
       },
       {
         no: 'taxi-3',
-        driverNo: 'driver-3',
+        driverNo: '3',
         type: 'NORMAL',
         carNum: '서울 12 가 1215',
       },
@@ -72,6 +79,7 @@ export class CallService {
     //나중에 component로 분리
     const call = this.callRepository.create({
       customerNo: userId,
+      driverNo: matchedDriver.driverNo,
       status: 'OPERATION',
       taxi: matchedDriver,
       departure: {
@@ -92,6 +100,38 @@ export class CallService {
 
     //step4: 매칭 정보 리턴(유저용)
     return savedCall;
+  }
+
+  @UsePipes(ValidationPipe)
+  async getActiveCallByDriverId(
+    driverId: string,
+  ): Promise<ActiveCallForDriverDto> {
+    const activeCall = await this.callRepository.findOne({
+      where: {
+        driverNo: driverId,
+      },
+    });
+    if (!activeCall) {
+      throw new NotFoundException(`Can't find user with id ${driverId}`);
+    }
+    // 유저 정보 가져오기 기능 필요
+    const customer = {
+      no: '1',
+      userNo: '1',
+      nickname: '홍길동',
+      phone: '010-1234-1234',
+      profileImg: 'https://picsum.photos/200',
+      is_deleted: false,
+      created_at: '2021-08-01T00:00:00.000Z',
+      updated_at: '2021-08-01T00:00:00.000Z',
+    };
+
+    const activeCallForDriver: object = {
+      ...activeCall,
+      ...customer,
+    };
+
+    return plainToInstance(ActiveCallForDriverDto, activeCallForDriver);
   }
 
   async deleteCallsByUserId(userId: string): Promise<string> {

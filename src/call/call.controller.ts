@@ -1,8 +1,9 @@
-import { Body, Controller, Post } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post } from '@nestjs/common';
 import { CallService } from './call.service';
 import { CreateCallDto } from './dto/createCall.dto';
 import { CallValidationPipe } from './pipes/callValidation.pipe';
 import { Call } from './call.entity';
+import { ActiveCallForDriverDto } from './dto/response/activeCallForDriver.dto';
 
 @Controller('call')
 export class CallController {
@@ -42,6 +43,13 @@ export class CallController {
      * 매칭이 되었으면, 매칭 정보를 리턴해주자.
      */
     return this.callService.createCall(createCallDto);
+  }
+
+  @Get('/active/driver/:id')
+  async getActiveCallByDriverId(
+    @Param('id') driverId: string,
+  ): Promise<ActiveCallForDriverDto> {
+    return await this.callService.getActiveCallByDriverId(driverId);
   }
 
   // @Get('/')
