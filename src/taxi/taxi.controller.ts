@@ -1,5 +1,14 @@
-import { Controller, Delete, Get, Param, Patch, Post } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Param,
+  Patch,
+  Post,
+} from '@nestjs/common';
 import { TaxiService } from './taxi.service';
+import { CreateTaxiDto } from './dto/create-taxi.dto';
 
 @Controller('taxi')
 export class TaxiController {
@@ -18,10 +27,9 @@ export class TaxiController {
   }
 
   // 택시 정보 등록
-  // TODO: 파라미터 받아야함
   @Post()
-  createTaxiInfo(): string {
-    return this.taxiService.createTaxiInfo();
+  createTaxiInfo(@Body() taxiInfo: CreateTaxiDto): string {
+    return this.taxiService.createTaxiInfo(taxiInfo);
   }
 
   // 택시 정보 수정
