@@ -4,6 +4,8 @@ import { CreateCallDto } from './dto/createCall.dto';
 import { CallValidationPipe } from './pipes/callValidation.pipe';
 import { Call } from './call.entity';
 import { ActiveCallForDriverDto } from './dto/response/activeCallForDriver.dto';
+import { TerminateCallDto } from './dto/request/terminateCall.dto';
+import { TerminateCallValidationPipe } from './pipes/terminateCallValidation.pipe';
 
 @Controller('call')
 export class CallController {
@@ -43,6 +45,15 @@ export class CallController {
      * 매칭이 되었으면, 매칭 정보를 리턴해주자.
      */
     return this.callService.createCall(createCallDto);
+  }
+
+  @Post('/:callId/terminate')
+  async terminateCall(
+    @Param('callId') callId: string,
+    @Body(TerminateCallValidationPipe) terminateCallDto: TerminateCallDto,
+  ): Promise<boolean> {
+    // 종료 시간, 요금 받아야지
+    return await this.callService.terminateCall(callId, terminateCallDto);
   }
 
   @Get('/active/driver/:id')

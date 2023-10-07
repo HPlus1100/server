@@ -10,6 +10,7 @@ import { TaxiInfo } from './types/taxi';
 import { Call } from './call.entity';
 import { ActiveCallForDriverDto } from './dto/response/activeCallForDriver.dto';
 import { plainToInstance } from 'class-transformer';
+import { TerminateCallDto } from './dto/request/terminateCall.dto';
 
 @Injectable()
 export class CallService {
@@ -80,7 +81,7 @@ export class CallService {
     const call = this.callRepository.create({
       customerNo: userId,
       driverNo: matchedDriver.driverNo,
-      status: 'OPERATION',
+      status: 'COMPLETE',
       taxi: matchedDriver,
       departure: {
         address: '서울시 강남구',
@@ -102,6 +103,40 @@ export class CallService {
     return savedCall;
   }
 
+  async terminateCall(
+    callId: string,
+    terminateCallDto: TerminateCallDto,
+  ): Promise<boolean> {
+    // 1. callId로 call 정보 조회
+    const currentCall = await this.callRepository.findOne({
+      where: { no: callId },
+    });
+    if (!currentCall) {
+      throw new NotFoundException(`Can't find call with id ${callId}`);
+    }
+
+    // 2. call의 status UpdateDate
+    await this.callRepository.update(
+      { no: callId },
+      {
+        status: 'COMPLETE',
+        ...terminateCallDto,
+      },
+    );
+    // 3. payment 결제 서비스 호출(없다면 timeout)
+    // paymentService.pay()
+    // 4. payment 결제 완료되면 billing 의 createBilling 컴포넌트 호출
+    // billingService.createBilling()
+    // 5. billing 정보 리턴
+    // 6. 레코드 기록이 삽입(call 데이터 통으로 삽입)
+    // 7. return boolean
+    return true;
+  }
+
+  /**
+   * @description
+   * 매칭 성공시 기사님이 받아갈 정보를 리턴해주는 API
+   */
   @UsePipes(ValidationPipe)
   async getActiveCallByDriverId(
     driverId: string,
