@@ -1,10 +1,9 @@
 import { Body, Controller, Get, Param, Post } from '@nestjs/common';
 import { CallService } from './call.service';
-import { CreateCallDto } from './dto/createCall.dto';
+import { CreateCallDto, TerminateCallDto } from './dto/request';
+import { ActiveCallForDriverDto } from './dto/response';
 import { CallValidationPipe } from './pipes/callValidation.pipe';
 import { Call } from './call.entity';
-import { ActiveCallForDriverDto } from './dto/response/activeCallForDriver.dto';
-import { TerminateCallDto } from './dto/request/terminateCall.dto';
 import { TerminateCallValidationPipe } from './pipes/terminateCallValidation.pipe';
 
 @Controller('call')

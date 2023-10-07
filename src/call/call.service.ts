@@ -4,13 +4,12 @@ import {
   UsePipes,
   ValidationPipe,
 } from '@nestjs/common';
-import { CreateCallDto } from './dto/createCall.dto';
+import { CreateCallDto, TerminateCallDto } from './dto/request';
+import { ActiveCallForDriverDto } from './dto/response';
 import { CallRepository } from './call.repository';
 import { TaxiInfo } from './types/taxi';
 import { Call } from './call.entity';
-import { ActiveCallForDriverDto } from './dto/response/activeCallForDriver.dto';
 import { plainToInstance } from 'class-transformer';
-import { TerminateCallDto } from './dto/request/terminateCall.dto';
 
 @Injectable()
 export class CallService {

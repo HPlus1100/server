@@ -1,5 +1,5 @@
 import { IsNotEmpty } from 'class-validator';
-import { TaxiType } from '../types/taxi';
+import { TaxiType } from '../../types/taxi';
 
 export class CreateCallDto {
   @IsNotEmpty()
