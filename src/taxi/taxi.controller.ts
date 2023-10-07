@@ -17,8 +17,6 @@ import { Taxi } from './taxi.entity';
 export class TaxiController {
   constructor(private readonly taxiService: TaxiService) {}
 
-  // commit 테스트
-
   // 전체 택시 정보 조회
   @Get()
   getAllTaxiInfo(): Promise<Taxi[]> {
