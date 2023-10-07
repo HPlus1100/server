@@ -11,7 +11,13 @@
     "outDir": "./dist",
     "baseUrl": "./",
     "incremental": true,
-    "skipLibCheck": true
+    "skipLibCheck": true,
+    "paths": {
+      //도메인 상대경로 여기 추가하세요
+      "@/*": ["src/*"],
+      "@test/*": ["test/*"],
+      "@call/*": ["src/call/*"]
+    }
   },
   "watchOptions": {
     // Use native file system events for files and directories
