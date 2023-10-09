@@ -1,7 +1,7 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { BillingService } from './billing.service';
-import { PaymentRepository } from './repository/payment.repository'; // 레포지토리 경로에 따라 수정 필요
-import { DailyEarningsRepository } from './repository/daily-earning.repository'; // 레포지토리 경로에 따라 수정 필요
+import { PaymentRepository } from './repository/payment.repository';
+import { DailyEarningsRepository } from './repository/daily-earning.repository';
 
 describe('BillingService', () => {
   let service: BillingService;
@@ -11,7 +11,7 @@ describe('BillingService', () => {
       providers: [
         BillingService,
         { provide: PaymentRepository, useValue: {} },
-        { provide: DailyEarningsRepository, useValue: {} }
+        { provide: DailyEarningsRepository, useValue: {} },
       ],
     }).compile();
 
