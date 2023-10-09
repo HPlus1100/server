@@ -5,7 +5,10 @@ import {
   ValidationPipe,
 } from '@nestjs/common';
 import { CreateCallDto, TerminateCallDto } from './dto/request';
-import { ActiveCallForDriverDto } from './dto/response';
+import {
+  ActiveCallForCustomerDto,
+  ActiveCallForDriverDto,
+} from './dto/response';
 import { CallRepository } from './call.repository';
 import { TaxiInfo } from './types/taxi';
 import { Call } from './call.entity';
@@ -130,6 +133,43 @@ export class CallService {
     // 6. 레코드 기록이 삽입(call 데이터 통으로 삽입)
     // 7. return boolean
     return true;
+  }
+
+  async getActiveCallByCustomerId(
+    customerId: string,
+  ): Promise<ActiveCallForCustomerDto> {
+    const activeCall = await this.callRepository.findOne({
+      where: {
+        customerNo: customerId,
+      },
+    });
+    if (!activeCall) {
+      throw new NotFoundException(`Can't find user with id ${customerId}`);
+    }
+
+    // 드라이버 정보 가져오기 기능 필요
+    const driver = {
+      no: '1',
+      name: '김첨지',
+      phone: '010-1111-2222',
+      profileImage: 'https://picsum.photos/200',
+    };
+
+    //택시정보 가져오기 기능 필요
+    const taxi = {
+      no: '2',
+      driverNo: '1',
+      carNum: '서울 12 가 1234',
+      type: 'DELUXE',
+    };
+
+    const activeCallForCustomer = {
+      taxiInfo: taxi,
+      driverInfo: driver,
+      ...activeCall,
+    };
+
+    return plainToInstance(ActiveCallForCustomerDto, activeCallForCustomer);
   }
 
   /**

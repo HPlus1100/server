@@ -5,10 +5,18 @@ import { ActiveCallForDriverDto } from './dto/response';
 import { CallValidationPipe } from './pipes/callValidation.pipe';
 import { Call } from './call.entity';
 import { TerminateCallValidationPipe } from './pipes/terminateCallValidation.pipe';
+import { ActiveCallForCustomerDto } from './dto/response/activeCall/activeCallForCustomer.dto';
 
 @Controller('call')
 export class CallController {
   constructor(private readonly callService: CallService) {}
+
+  @Get('/active/customer/:id')
+  async getActiveCallByCustomerId(
+    @Param('id') customerId: string,
+  ): Promise<ActiveCallForCustomerDto> {
+    return await this.callService.getActiveCallByCustomerId(customerId);
+  }
 
   @Post('/')
   createCall(
