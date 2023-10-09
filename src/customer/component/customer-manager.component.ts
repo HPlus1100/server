@@ -17,7 +17,7 @@ export class CustomerManager implements CustomerManagerRepository{
        private customerRepository: Repository<Customer>
     ) {}
 
-    async save(createCustomerDto: CreateCustomerDto): Promise<void> {
+    async register(createCustomerDto: CreateCustomerDto): Promise<void> {
         const { email, password, nickname, phone, profileImg } = createCustomerDto
 
         const user = new User()

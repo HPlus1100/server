@@ -1,5 +1,5 @@
 import { Inject, Injectable } from '@nestjs/common';
-import { UserReader } from './components/query/user-reader.component';
+import { UserReader } from './components/user-reader.component';
 
 @Injectable()
 export class UserService {

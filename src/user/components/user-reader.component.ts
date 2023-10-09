@@ -9,13 +9,13 @@ import { Repository } from "typeorm";
 export class UserReader implements UserRepository {
     constructor(
         @InjectRepository(User)
-        private userRepository: Repository<UserRepository>
+        private userRepository: Repository<User>
     ) {
         
     }
 
     async existsEmail(email: string): Promise<boolean> {
-        const existsUserByEmail = await this.findOneByEmail(email)
+        const existsUserByEmail = await this.userRepository.findOneBy({ email })
         
         if(existsUserByEmail) {
             throw new ConflictException('이미 존재하는 이메일 입니다.')
