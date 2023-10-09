@@ -1,5 +1,6 @@
-import { Controller, Get, Param, Post } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post, Query } from '@nestjs/common';
 import { BillingService } from './billing.service';
+import { PaymentInfoDto } from './domain/dto/payment-info.dto';
 
 @Controller('billing')
 export class BillingController {
@@ -9,10 +10,13 @@ export class BillingController {
    * 결제 EndPoint
    *
    * @param {paymentInfo: PaymentInfo, amount: number} - 결제정보, 결제금액
-   * @returns {status: string; amount: number; ...otherData} - 결제결과, 처리된금액
+   * @returns {status: string; amount: number; ...otherData} - 결제결과, 처리된금x`액
    */
   @Post('process')
-  async processBillingPayment() {
+  processBillingPayment(@Body() paymentInfo: PaymentInfoDto) {
+    const result = this.billingService.findByBankAccountNumber(
+      paymentInfo['accountNumber'],
+    );
     /**
      * 의문 1. 결제 관련 로직을 비동기로 처리하는게 옳은 것인가..?
      * -> 결제 요청같은경우, 확장성 및 UX 측면에서는 비동기가맞으나, 실제 금액이 처리되는 앱은 아니다보니, 고민을 해봐야 할 것 같음.
@@ -24,6 +28,7 @@ export class BillingController {
      *
      * -> 금액 및 유저 확인 후 결제 API를 위한 Service로 전달하거나 실패 메시지 전달.
      */
+    return result;
   }
 
   /**
@@ -32,7 +37,8 @@ export class BillingController {
    * @returns {status: string} - 정보 저장 상태를 반환.
    */
   @Post('payment-info')
-  savePaymentInfo(): string {
+  savePaymentInfo(@Body() PaymentInfoDto: PaymentInfoDto) {
+    this.billingService.saveUserPaymentInfo(PaymentInfoDto);
     /**
      * 구현
      * -> 매개변수 DTO사용
@@ -50,7 +56,8 @@ export class BillingController {
    * @returns {PaymentInfo} - 조회한 카드 또는 계좌 정보를 반환.
    */
   @Get('payment-info/:userId')
-  async selectPaymentInfo(@Param('userId') userId: string) {
+  selectPaymentInfo(@Param('userId') userId: string) {
+    this.billingService.getPaymentInfo(userId);
     /**
      * 구현
      * -> 유저 유효성 검사
@@ -63,17 +70,27 @@ export class BillingController {
   /**
    * 당일 수익 조회 EndPoint
    * @param {string} userId - 유저 id
+   * @Param {Date} earningsDates - 조회 날짜
    * @returns {DailyEarnings} - 조회한 당일 수익 정보
    */
   @Get('earnings-today/:userId')
-  async getEarningsToday(@Param('userId') userId: string) {
+  async getEarningsToday(
+    @Param('userId') userId: string,
+    @Query('earningDate') earningsDates: string,
+  ) {
+    const result = await this.billingService.getTodayEarnings(
+      userId,
+      earningsDates,
+    );
     /**
      * 구현
      * -> 유저 유효성 검사
      * -> 인증된 사용자-> service계층 전달.
      * -> 인증되지 않았다면 실패.
      */
-
-    return `welcome! : ${userId} This service select your DailyEarnings`;
+    return (
+      `welcome! : ${userId} This service select your DailyEarnings \n result : ` +
+      JSON.stringify(result)
+    );
   }
 }
