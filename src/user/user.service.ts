@@ -1,7 +1,14 @@
-import { Injectable } from '@nestjs/common';
+import { Inject, Injectable } from '@nestjs/common';
+import { UserReader } from './components/query/user-reader.component';
 
 @Injectable()
 export class UserService {
+  
+  constructor(
+    @Inject('UserReader')
+    private userReader: UserReader
+  ) {}
+
   findOne() {
     return 'find one';
   }
@@ -10,7 +17,7 @@ export class UserService {
     return 'findAll';
   }
 
-  findByUsername(username: string) {
-    return username;
+  findOneByEmail() {
+    return 'asd'
   }
 }

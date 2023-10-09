@@ -9,6 +9,11 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { TypeOrmConfigService } from './config/typeorm.config';
 import { CallModule } from './call/call.module';
 import { AuthModule } from './auth/auth.module';
+import { UserModule } from './user/user.module';
+import { DriverController } from './driver/driver.controller';
+import { DriverModule } from './driver/driver.module';
+import { CustomerController } from './customer/customer.controller';
+import { CustomerModule } from './customer/customer.module';
 
 @Module({
 	imports: [
@@ -24,8 +29,11 @@ import { AuthModule } from './auth/auth.module';
 		}),
 		CallModule,
 		AuthModule,
+		UserModule,
+		DriverModule,
+		CustomerModule
 	],
-	controllers: [AppController, HealthCheckController],
+	controllers: [AppController, HealthCheckController, DriverController, CustomerController],
 	providers: [AppService],
 })
 export class AppModule {}
