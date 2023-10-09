@@ -1,25 +1,13 @@
-import {
-  IsUUID,
-  IsNotEmpty,
-  IsNumber,
-  IsOptional,
-  IsInt,
-  IsEnum,
-} from 'class-validator';
-import { BillingStatus } from './billing.entity';
+import { IsNotEmpty, IsNumber, IsOptional, IsEnum } from 'class-validator';
+import { BillingStatus } from '../type/billing.enum';
 
-export class BillingDomain {
-  @IsUUID()
+export class BillingDto {
   @IsNotEmpty()
   readonly billingNo: string;
 
   @IsNumber()
   @IsNotEmpty()
   readonly amount: number;
-
-  @IsInt()
-  @IsOptional()
-  readonly distance?: number;
 
   @IsEnum(BillingStatus)
   @IsNotEmpty()
