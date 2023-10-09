@@ -1,11 +1,16 @@
 import { Exclude, Expose } from 'class-transformer';
 
 @Exclude()
-export class ActiveCallForDriverDto {
+export class DriverInfo {
   @Expose()
-  customerNo: string;
+  no: string;
+
   @Expose()
-  nickname: string;
+  name: string;
+
   @Expose()
   phone: `${number}-${number}-${number}`;
+
+  @Expose()
+  profileImage: string;
 }
