@@ -23,7 +23,7 @@ export class Taxi extends BaseEntity {
     comment: 'NORMAL | LUXURY | DELUXE',
     name: 'car_type',
   })
-  type: string;
+  type: CarType;
 
   @Column({ type: 'varchar', length: 50 })
   company_name: string;
