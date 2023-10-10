@@ -12,6 +12,10 @@ export class TaxiService {
     private taxiRepository: TaxiRepository,
   ) {}
 
+  /*
+    택시 조회시 드라이버 정보도 조회되어야 한다고 말씀해주심
+ */
+
   // 전체 택시 정보 조회
   async getAllTaxiInfo(): Promise<Taxi[]> {
     // 사용자 권한 확인
@@ -24,11 +28,15 @@ export class TaxiService {
   // 택시 Id로 택시 정보 조회
   async getTaxiInfoById(taxiId: number): Promise<Taxi> {
     // 사용자 권한 확인
-    // 택시 id 존재 확인
 
+    // 택시 id 존재 확인
     const taxiInfo = await this.taxiRepository.findOneBy({
-      id: taxiId,
+      driverNo: taxiId,
     });
+
+    if (!taxiInfo) {
+      throw new NotFoundException(`Can't find taxi with id ${taxiId}`);
+    }
 
     return taxiInfo;
   }
@@ -46,6 +54,12 @@ export class TaxiService {
      *  => 차량 번호 확인
      */
     // 택시 id 생성
+
+    // 드라이버 존재 확인
+
+    // 택시 종류 확인
+
+    // 차량 번호 확인
 
     const newTaxiInfo = this.taxiRepository.create({
       ...createTaxiDto,
