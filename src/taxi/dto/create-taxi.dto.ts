@@ -1,4 +1,5 @@
 import { IsInt, IsNotEmpty, IsString } from 'class-validator';
+import { CarType } from '../types/taxi.enum';
 
 export class CreateTaxiDto {
   @IsNotEmpty()
@@ -6,8 +7,7 @@ export class CreateTaxiDto {
   driver_no: number;
 
   @IsNotEmpty()
-  @IsInt()
-  type: string;
+  type: CarType;
 
   @IsNotEmpty()
   @IsString()
