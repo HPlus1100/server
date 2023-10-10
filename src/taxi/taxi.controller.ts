@@ -12,6 +12,7 @@ import { TaxiService } from './taxi.service';
 import { CreateTaxiDto } from './dto/create-taxi.dto';
 import { UpdateTaxiDto } from './dto/update-taxi.dto';
 import { Taxi } from './taxi.entity';
+import { ResponseTaxiDto } from './dto/response-taxi.dto';
 
 @Controller('taxi')
 export class TaxiController {
@@ -31,7 +32,7 @@ export class TaxiController {
 
   // 택시 정보 등록
   @Post()
-  createTaxiInfo(@Body() taxiInfo: CreateTaxiDto): Promise<Taxi> {
+  createTaxiInfo(@Body() taxiInfo: CreateTaxiDto): Promise<ResponseTaxiDto> {
     return this.taxiService.createTaxiInfo(taxiInfo);
   }
 
@@ -40,7 +41,7 @@ export class TaxiController {
   updateTaxiInfoById(
     @Param('id', ParseIntPipe) taxiId: number,
     @Body() taxiInfo: UpdateTaxiDto,
-  ): Promise<string> {
+  ): Promise<ResponseTaxiDto> {
     return this.taxiService.updateTaxiInfoById(taxiId, taxiInfo);
   }
 
@@ -48,7 +49,7 @@ export class TaxiController {
   @Delete(':id')
   deleteTaxiInfoById(
     @Param('id', ParseIntPipe) taxiId: number,
-  ): Promise<string> {
+  ): Promise<ResponseTaxiDto> {
     return this.taxiService.deleteTaxiInfoById(taxiId);
   }
 }

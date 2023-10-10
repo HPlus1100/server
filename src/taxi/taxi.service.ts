@@ -4,7 +4,9 @@ import {
   UnauthorizedException,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+import { plainToInstance } from 'class-transformer';
 import { CreateTaxiDto } from './dto/create-taxi.dto';
+import { ResponseTaxiDto } from './dto/response-taxi.dto';
 import { UpdateTaxiDto } from './dto/update-taxi.dto';
 import { Taxi } from './taxi.entity';
 import { TaxiRepository } from './taxi.repository';
@@ -53,7 +55,7 @@ export class TaxiService {
   }
 
   // 택시 정보 등록
-  async createTaxiInfo(createTaxiDto: CreateTaxiDto): Promise<Taxi> {
+  async createTaxiInfo(createTaxiDto: CreateTaxiDto): Promise<ResponseTaxiDto> {
     const { driver_no, type, car_num } = createTaxiDto;
 
     // 사용자 권한 확인
@@ -92,14 +94,14 @@ export class TaxiService {
 
     await this.taxiRepository.save(newTaxiInfo);
 
-    return newTaxiInfo;
+    return plainToInstance(ResponseTaxiDto, newTaxiInfo);
   }
 
   // 택시 정보 수정
   async updateTaxiInfoById(
     taxiId: number,
     updateTaxiDto: UpdateTaxiDto,
-  ): Promise<string> {
+  ): Promise<ResponseTaxiDto> {
     const { driver_no, type, car_num } = updateTaxiDto;
 
     // 사용자 권한 확인
@@ -146,12 +148,11 @@ export class TaxiService {
       ...updateTaxiDto,
     });
 
-    // TODO return 정의 필요
-    return `update taxi info by id : ${taxiId}, ${updateTaxiDto}`;
+    return plainToInstance(ResponseTaxiDto, updateTaxiDto);
   }
 
   // 택시 정보 삭제
-  async deleteTaxiInfoById(taxiId: number): Promise<string> {
+  async deleteTaxiInfoById(taxiId: number): Promise<ResponseTaxiDto> {
     // 사용자 권한 확인
     if (!this.checkAuthenticated()) {
       throw new UnauthorizedException(`Current user is unauthorized`);
@@ -175,8 +176,7 @@ export class TaxiService {
       throw new NotFoundException(`${taxiId} is not exist`);
     }
 
-    // TODO return 정의 필요
-    return `delete taxi info by id : ${taxiId}`;
+    return plainToInstance(ResponseTaxiDto, taxiInfo);
   }
 
   // 아래 내용을 Component 처리하는지 확인 필요
