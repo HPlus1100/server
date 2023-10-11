@@ -10,6 +10,7 @@ import { TypeOrmConfigService } from './config/typeorm.config';
 import { CallModule } from './call/call.module';
 import { TaxisModule } from './taxis/taxis.module';
 import { BillingModule } from './billing/billing.module';
+import { PaymentsModule } from './payments/payments.module';
 
 @Module({
   imports: [
@@ -26,6 +27,7 @@ import { BillingModule } from './billing/billing.module';
     CallModule,
     TaxisModule,
     BillingModule,
+    PaymentsModule,
   ],
   controllers: [AppController, HealthCheckController],
   providers: [AppService],
