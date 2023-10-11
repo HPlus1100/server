@@ -2,16 +2,20 @@ import { DataSource, Repository } from 'typeorm';
 import { Taxi } from './taxi.entity';
 import { newDb } from 'pg-mem';
 import { CarType } from './types/taxi.enum';
+import { TaxiService } from './taxi.service';
+import { TaxiRepository } from './taxi.repository';
+import { Test, TestingModule } from '@nestjs/testing';
+import { TypeOrmModule } from '@nestjs/typeorm';
 
 describe('With pg-mem, TypeORM의 Taxi Repository Test', () => {
   let dataSource: DataSource;
+  let taxiService: TaxiService;
   let taxiRepository: Repository<Taxi>;
 
   beforeAll(async () => {
     // setting memory database
     const db = newDb();
 
-    //
     db.public.registerFunction({
       name: 'current_database',
       implementation: () => 'test',
@@ -35,6 +39,18 @@ describe('With pg-mem, TypeORM의 Taxi Repository Test', () => {
     await dataSource.synchronize();
 
     taxiRepository = dataSource.getRepository(Taxi);
+  });
+
+  beforeEach(async () => {
+    const module: TestingModule = await Test.createTestingModule({
+      imports: [TypeOrmModule.forRoot(), TypeOrmModule.forFeature([Taxi])],
+      providers: [TaxiService, TaxiRepository],
+    })
+      .overrideProvider(DataSource)
+      .useValue(dataSource)
+      .compile();
+
+    taxiService = module.get<TaxiService>(TaxiService);
   });
 
   afterAll(async () => {
@@ -64,5 +80,11 @@ describe('With pg-mem, TypeORM의 Taxi Repository Test', () => {
     const taxi = await taxiRepository.findOne({ where: { no: 1 } });
 
     expect(taxi.carNum).toBe('68오8269');
+  });
+
+  it('taxi service - getAllTaxiInfo test', async () => {
+    const taxis = await taxiService.getAllTaxiInfo();
+    expect(taxis.length).toBe(1);
+    expect(taxis[0].companyName).toBe('Hyundai');
   });
 });
