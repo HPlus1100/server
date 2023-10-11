@@ -3,18 +3,19 @@ import { Repository } from "typeorm";
 import { InjectRepository } from "@nestjs/typeorm";
 
 import { Customer } from "src/customer/entity/customer.entity";
+import { User } from "src/user/entity/user.entity";
 
 import { CreateCustomerDto } from "src/customer/dto/create-customer.dto";
 
 import { CustomerManagerRepository } from "src/customer/repository/customer-manager.repository"; 
-import { User } from "src/user/entity/user.entity";
+
 
 
 @Injectable()
 export class CustomerManager implements CustomerManagerRepository{
     constructor(
-    @InjectRepository(Customer)
-       private customerRepository: Repository<Customer>
+        @InjectRepository(Customer)
+        private customerRepository: Repository<Customer>
     ) {}
 
     async register(createCustomerDto: CreateCustomerDto): Promise<void> {

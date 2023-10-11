@@ -1,21 +1,21 @@
 import { Inject, Injectable } from '@nestjs/common';
 
-import { CustomerManager } from 'src/customer/component/customer-manager.component';
-import { UserReader } from 'src/user/components/user-reader.component';
-
 import { CreateCustomerDto } from 'src/customer/dto/create-customer.dto';
 import { CreateDriverDto } from './dto/request/create-driver.dto';
-import { DriverManager } from 'src/driver/component/driver-manager.component';
+
+import { CustomerManagerRepository } from 'src/customer/repository/customer-manager.repository';
+import { DriverManagerRepository } from 'src/driver/repository/driver-manager.repository';
+import { UserReaderRepository } from 'src/user/repository/user-reader.repository';
 
 @Injectable()
 export class AuthService {
   constructor(
     @Inject('UserReader')
-    private readonly userReader: UserReader,
+    private readonly userReader: UserReaderRepository,
     @Inject('CustomerManager')
-    private readonly customerManager: CustomerManager,
+    private readonly customerManager: CustomerManagerRepository,
     @Inject('DriverManager')
-    private readonly driverManager: DriverManager
+    private readonly driverManager: DriverManagerRepository
   ) {}
 
   validateUser(email: string, password: string): Promise<boolean> {  

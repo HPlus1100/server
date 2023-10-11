@@ -1,12 +1,12 @@
 import { BadRequestException, ConflictException, Injectable, NotFoundException } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import { User } from "src/user/entity/user.entity";
-import { UserRepository } from "src/user/repository/user.repository";
+import { UserReaderRepository } from "src/user/repository/user-reader.repository";
 import { Repository } from "typeorm";
 
 
 @Injectable()
-export class UserReader implements UserRepository {
+export class UserReader implements UserReaderRepository {
     constructor(
         @InjectRepository(User)
         private userRepository: Repository<User>
