@@ -1,25 +1,47 @@
-import { Test, TestingModule } from '@nestjs/testing';
-import { TaxiService } from './taxi.service';
-import { TaxiRepository } from './taxi.repository';
-import { DataSource } from 'typeorm';
-import { dataSourceMockFactory } from '../../test/mock/dataSourceMockFactory';
+import { DataSource, Repository } from 'typeorm';
+import { Taxi } from './taxi.entity';
+import { newDb } from 'pg-mem';
 
-describe('TaxiService', () => {
-  let service: TaxiService;
+describe('With pg-mem, TypeORM의 Taxi Repository Test', () => {
+  let dataSource: DataSource;
+  let taxiRepository: Repository<Taxi>;
 
-  beforeEach(async () => {
-    const module: TestingModule = await Test.createTestingModule({
-      providers: [
-        TaxiService,
-        TaxiRepository,
-        { provide: DataSource, useFactory: dataSourceMockFactory },
-      ],
-    }).compile();
+  beforeAll(async () => {
+    // setting memory database
+    const db = newDb();
 
-    service = module.get<TaxiService>(TaxiService);
+    //
+    db.public.registerFunction({
+      name: 'current_database',
+      implementation: () => 'test',
+    });
+
+    // version 함수 없다고 하여 추가
+    db.public.registerFunction({
+      name: 'version',
+      implementation: () => '2.7.1',
+    });
+
+    // createTypeormConnection deprecated되어 createTypeormDataSource 함수 사용
+    dataSource = await db.adapters.createTypeormDataSource({
+      type: 'postgres',
+      entities: [Taxi],
+      database: 'test',
+    });
+
+    // createTypeormDataSource 함수 사용시 아래와 같이 해줘야한다고 함
+    await dataSource.initialize();
+    await dataSource.synchronize();
+
+    taxiRepository = dataSource.getRepository(Taxi);
   });
 
-  it('should be defined', () => {
-    expect(service).toBeDefined();
+  afterAll(async () => {
+    await dataSource.close();
+  });
+
+  it('to be defined', () => {
+    expect(dataSource).toBeDefined();
+    expect(taxiRepository).toBeDefined();
   });
 });
