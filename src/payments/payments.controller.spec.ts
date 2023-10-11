@@ -17,4 +17,20 @@ describe('PaymentsController', () => {
   it('should be defined', () => {
     expect(controller).toBeDefined();
   });
+
+  describe('findAll', () => {
+    it.todo('should call the service');
+  });
+  describe('findOne', () => {
+    it.todo('should call the service');
+  });
+  describe('create', () => {
+    it.todo('should call the service');
+  });
+  describe('update', () => {
+    it.todo('should call the service');
+  });
+  describe('remove', () => {
+    it.todo('should call the service');
+  });
 });
