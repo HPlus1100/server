@@ -16,7 +16,8 @@
       //도메인 상대경로 여기 추가하세요
       "@/*": ["src/*"],
       "@test/*": ["test/*"],
-      "@call/*": ["src/call/*"]
+      "@call/*": ["src/call/*"],
+      "@taxi/*": ["src/taxi/*"]
     }
   },
   "watchOptions": {

@@ -3,7 +3,7 @@ import { Taxi } from './taxi.entity';
 import { newDb } from 'pg-mem';
 import { CarType } from './types/taxi.enum';
 import { TaxiService } from './taxi.service';
-import { TaxiRepository } from './taxi.repository';
+import { TaxiRepository } from '@taxi/taxi.repository';
 import { Test, TestingModule } from '@nestjs/testing';
 import { TypeOrmModule } from '@nestjs/typeorm';
 

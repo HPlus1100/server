@@ -78,7 +78,11 @@
     "collectCoverageFrom": [
       "**/*.(t|j)s"
     ],
+    "moduleNameMapper": {
+      "^@taxi/(.*)$": "<rootDir>/taxi/$1"
+    },
     "coverageDirectory": "../coverage",
+    "preset": "ts-jest",
     "testEnvironment": "node"
   }
 }
