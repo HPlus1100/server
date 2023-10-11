@@ -4,20 +4,20 @@ import { CarType } from '../types/taxi.enum';
 export class CreateTaxiDto {
   @IsNotEmpty()
   @IsInt()
-  driver_no: number;
+  driverNo: number;
 
   @IsNotEmpty()
-  type: CarType;
-
-  @IsNotEmpty()
-  @IsString()
-  company_name: string;
+  carType: CarType;
 
   @IsNotEmpty()
   @IsString()
-  car_num: string;
+  companyName: string;
 
   @IsNotEmpty()
   @IsString()
-  car_model: string;
+  carNum: string;
+
+  @IsNotEmpty()
+  @IsString()
+  carModel: string;
 }

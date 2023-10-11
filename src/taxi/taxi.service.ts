@@ -56,7 +56,7 @@ export class TaxiService {
 
   // 택시 정보 등록
   async createTaxiInfo(createTaxiDto: CreateTaxiDto): Promise<ResponseTaxiDto> {
-    const { driver_no, type, car_num } = createTaxiDto;
+    const { driverNo, carType, carNum } = createTaxiDto;
 
     // 사용자 권한 확인
     if (!this.checkAuthenticated()) {
@@ -74,18 +74,20 @@ export class TaxiService {
      */
 
     // 드라이버 존재 확인
-    if (!this.checkDriverNo(driver_no)) {
-      throw new NotFoundException(`Can't find driver no ${driver_no}`);
+    if (!this.checkDriverNo(driverNo)) {
+      throw new NotFoundException(`Can't find driver no ${driverNo}`);
     }
 
+    // TODO 운전 면허증 번호 확인
+
     // 택시 종류 확인
-    if (!this.checkCarType(type)) {
-      throw new NotFoundException(`Car Type is invalid : ${type}`);
+    if (!this.checkCarType(carType)) {
+      throw new NotFoundException(`Car Type is invalid : ${carType}`);
     }
 
     // 차량 번호 확인
-    if (!this.checkCarNum(car_num)) {
-      throw new Error(`Car Num is invalid : ${car_num}`);
+    if (!this.checkCarNum(carNum)) {
+      throw new Error(`Car Num is invalid : ${carNum}`);
     }
 
     const newTaxiInfo = this.taxiRepository.create({
@@ -102,7 +104,7 @@ export class TaxiService {
     taxiId: number,
     updateTaxiDto: UpdateTaxiDto,
   ): Promise<ResponseTaxiDto> {
-    const { driver_no, type, car_num } = updateTaxiDto;
+    const { driverNo, carType, carNum } = updateTaxiDto;
 
     // 사용자 권한 확인
     if (!this.checkAuthenticated()) {
@@ -130,18 +132,20 @@ export class TaxiService {
 
     // 드라이버 존재 확인
     // TODO DB 조회로 바뀌어야 할 거 같음
-    if (!this.checkDriverNo(driver_no)) {
-      throw new NotFoundException(`Can't find driver no ${driver_no}`);
+    if (!this.checkDriverNo(driverNo)) {
+      throw new NotFoundException(`Can't find driver no ${driverNo}`);
     }
 
+    // TODO 운전 면허증 번호 확인
+
     // 택시 종류 확인
-    if (!this.checkCarType(type)) {
-      throw new NotFoundException(`Car Type is invalid : ${type}`);
+    if (!this.checkCarType(carType)) {
+      throw new NotFoundException(`Car Type is invalid : ${carType}`);
     }
 
     // 차량 번호 확인
-    if (!this.checkCarNum(car_num)) {
-      throw new Error(`Car Num is invalid : ${car_num}`);
+    if (!this.checkCarNum(carNum)) {
+      throw new Error(`Car Num is invalid : ${carNum}`);
     }
 
     await this.taxiRepository.update(taxiId, {
@@ -186,23 +190,23 @@ export class TaxiService {
     return true;
   }
 
-  checkDriverNo(driver_no: number): boolean {
-    // TODO driver_no 로 driver 존재 체크
-    return driver_no !== 0;
+  checkDriverNo(driverNo: number): boolean {
+    // TODO driverNo 로 driver 존재 체크
+    return driverNo !== 0;
   }
 
-  checkCarNum(car_num: string): boolean {
+  checkCarNum(carNum: string): boolean {
     // 차량번호 정규식 체크
     // ex) 12가 1234 || 123가 1234
     // 숫자 2,3개 허용
     // 한글 1개 허용
     // 숫자 4자
     const regex = /\d{2,3}[가-힣]{1}\d{4}/;
-    return regex.test(car_num);
+    return regex.test(carNum);
   }
 
-  checkCarType(type: CarType): boolean {
+  checkCarType(carType: CarType): boolean {
     // 선언된 CarType으로 체크
-    return type in CarType;
+    return carType in CarType;
   }
 }

@@ -4,27 +4,27 @@ import { CarType } from '../types/taxi.enum';
 
 export class UpdateTaxiDto {
   // @Expose : 서로 이름/컨벤션이 다른 경우 사용
-  @Expose({ name: 'no' }) // name에 일치하는 값으로 매핑
+  @Expose() // name에 일치하는 값으로 매핑
   @IsNotEmpty()
   @IsInt()
-  id: number;
+  no: number;
 
   @IsNotEmpty()
   @IsInt()
-  driver_no: number;
+  driverNo: number;
 
   @IsNotEmpty()
-  type: CarType;
-
-  @IsNotEmpty()
-  @IsString()
-  company_name: string;
+  carType: CarType;
 
   @IsNotEmpty()
   @IsString()
-  car_num: string;
+  companyName: string;
 
   @IsNotEmpty()
   @IsString()
-  car_model: string;
+  carNum: string;
+
+  @IsNotEmpty()
+  @IsString()
+  carModel: string;
 }
