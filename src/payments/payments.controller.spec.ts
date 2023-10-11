@@ -1,7 +1,7 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { PaymentsController } from './payments.controller';
 import { PaymentsService } from './payments.service';
-import { Payment } from '../payments/entities/payment.entity';
+import { Payment } from '@payments/entities/payment.entity';
 
 describe('PaymentsController', () => {
   let controller: PaymentsController;
@@ -38,7 +38,10 @@ describe('PaymentsController', () => {
         const min = 1;
         const range = max - min + 1;
         const numOfPayments = Math.floor(Math.random() * range) + min;
-        const mockedPayments = Array.from({ length: numOfPayments }, () => new Payment());
+        const mockedPayments = Array.from(
+          { length: numOfPayments },
+          () => new Payment(),
+        );
         findAllSpy.mockReturnValue(mockedPayments);
 
         const result = controller.findAll();
