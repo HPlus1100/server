@@ -23,16 +23,16 @@ export class Taxi extends BaseEntity {
     comment: 'NORMAL | LUXURY | DELUXE',
     name: 'car_type',
   })
-  type: CarType;
+  carType: CarType;
 
-  @Column({ type: 'varchar', length: 50 })
-  company_name: string;
+  @Column({ type: 'varchar', length: 50, name: 'company_name' })
+  companyName: string;
 
-  @Column({ type: 'varchar', length: 50 })
-  car_num: string;
+  @Column({ type: 'varchar', length: 50, name: 'car_num' })
+  carNum: string;
 
-  @Column({ type: 'varchar', length: 255 })
-  car_model: string;
+  @Column({ type: 'varchar', length: 255, name: 'car_model' })
+  carModel: string;
 
   @Column({ name: 'is_deleted', default: false })
   isDeleted: boolean;
