@@ -25,13 +25,18 @@ export class Taxi extends BaseEntity {
   })
   carType: CarType;
 
-  @Column({ type: 'varchar', length: 50, name: 'company_name' })
+  @Column({
+    type: 'varchar',
+    length: 50,
+    name: 'company_name',
+    nullable: false,
+  })
   companyName: string;
 
-  @Column({ type: 'varchar', length: 50, name: 'car_num' })
+  @Column({ type: 'varchar', length: 50, name: 'car_num', nullable: false })
   carNum: string;
 
-  @Column({ type: 'varchar', length: 255, name: 'car_model' })
+  @Column({ type: 'varchar', length: 255, name: 'car_model', nullable: false })
   carModel: string;
 
   @Column({ name: 'is_deleted', default: false })
