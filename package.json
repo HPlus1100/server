@@ -79,10 +79,13 @@
       "**/*.(t|j)s"
     ],
     "moduleNameMapper": {
+      "^@/(.*)$": "<rootDir>/src/$1",
+      "^@test/(.*)$": "<rootDir>/test/$1",
+      "^@call/(.*)$": "<rootDir>/call/$1",
       "^@taxi/(.*)$": "<rootDir>/taxi/$1"
     },
     "coverageDirectory": "../coverage",
-    "preset": "ts-jest",
-    "testEnvironment": "node"
+    "testEnvironment": "node",
+    "preset": "ts-jest"
   }
 }
