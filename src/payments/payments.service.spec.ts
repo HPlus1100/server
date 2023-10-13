@@ -1,5 +1,13 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { PaymentsService } from './payments.service';
+import { getRepositoryToken } from '@nestjs/typeorm';
+import { Payment } from '@payments/entities/payment.entity';
+import { DataSource, Repository } from 'typeorm';
+
+type MockRepository<T = any> = Partial<Record<keyof Repository<T>, jest.Mock>>
+const createMockRepository = <T = any>(): MockRepository<T> => ({
+  find: jest.fn(),
+});
 
 describe('PaymentsService', () => {
   let service: PaymentsService;
