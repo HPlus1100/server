@@ -1,20 +1,18 @@
 import {
+  IsBoolean,
+  IsDateString,
   IsEnum,
   IsNotEmpty,
-  IsNumber,
   IsOptional,
   IsString,
   Length,
+  ValidateIf,
 } from 'class-validator';
 import { PaymentType } from '../type/billing.enum';
 
 export class PaymentInfoDto {
   @IsNotEmpty()
-  userId: string;
-
-  @IsNotEmpty()
-  @IsNumber()
-  amount: number;
+  customerNo: string;
 
   @IsEnum(PaymentType)
   type: PaymentType;
@@ -22,10 +20,32 @@ export class PaymentInfoDto {
   @IsOptional()
   @IsString()
   @Length(1, 50)
-  accountNumber: string;
+  accountNumber?: string;
+
+  @ValidateIf((o) => o.accountNumber)
+  @IsString()
+  @Length(1, 50)
+  accountHolderName?: string;
 
   @IsOptional()
   @IsString()
   @Length(1, 50)
-  cardNum: string;
+  cardNum?: string;
+
+  @ValidateIf((o) => o.cardNum)
+  @IsString()
+  @Length(3, 4)
+  cvc?: string;
+
+  @ValidateIf((o) => o.cardNum)
+  @IsDateString()
+  expireDate?: string;
+
+  @IsOptional()
+  @IsBoolean()
+  isDefault?: boolean;
+
+  @IsOptional()
+  @IsBoolean()
+  isDeleted?: boolean;
 }
