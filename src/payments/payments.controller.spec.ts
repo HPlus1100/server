@@ -2,6 +2,13 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { PaymentsController } from './payments.controller';
 import { PaymentsService } from './payments.service';
 import { Payment } from '@payments/entities/payment.entity';
+import { Repository } from 'typeorm';
+import { getRepositoryToken } from '@nestjs/typeorm';
+
+type MockRepository<T = any> = Partial<Record<keyof Repository<T>, jest.Mock>>
+const createMockRepository = <T = any>(): MockRepository<T> => ({
+  find: jest.fn(),
+});
 
 describe('PaymentsController', () => {
   let controller: PaymentsController;
@@ -10,7 +17,7 @@ describe('PaymentsController', () => {
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       controllers: [PaymentsController],
-      providers: [PaymentsService],
+      providers: [PaymentsService, { provide: getRepositoryToken(Payment), useValue: createMockRepository() }],
     }).compile();
 
     controller = module.get<PaymentsController>(PaymentsController);
