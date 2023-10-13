@@ -78,7 +78,14 @@
     "collectCoverageFrom": [
       "**/*.(t|j)s"
     ],
+    "moduleNameMapper": {
+      "^@/(.*)$": "<rootDir>/src/$1",
+      "^@test/(.*)$": "<rootDir>/test/$1",
+      "^@call/(.*)$": "<rootDir>/call/$1",
+      "^@billing/(.*)$": "<rootDir>/billing/$1"
+    },
     "coverageDirectory": "../coverage",
-    "testEnvironment": "node"
+    "testEnvironment": "node",
+    "preset": "ts-jest"
   }
 }
