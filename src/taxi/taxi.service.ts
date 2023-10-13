@@ -44,7 +44,7 @@ export class TaxiService {
 
     // 택시 id 존재 확인
     const taxiInfo = await this.taxiRepository.findOneBy({
-      driverNo: taxiId,
+      no: taxiId,
     });
 
     if (!taxiInfo) {
@@ -123,7 +123,7 @@ export class TaxiService {
 
     // 택시 id 존재 확인
     const taxiInfo = await this.taxiRepository.findOneBy({
-      driverNo: taxiId,
+      no: taxiId,
     });
 
     if (!taxiInfo) {
@@ -164,7 +164,7 @@ export class TaxiService {
 
     // 택시 id 존재 확인
     const taxiInfo = await this.taxiRepository.findOneBy({
-      driverNo: taxiId,
+      no: taxiId,
     });
 
     if (!taxiInfo) {
@@ -185,17 +185,17 @@ export class TaxiService {
 
   // 아래 내용을 Component 처리하는지 확인 필요
 
-  checkAuthenticated(): boolean {
+  private checkAuthenticated(): boolean {
     // 유저 사용 권한 체크
     return true;
   }
 
-  checkDriverNo(driverNo: number): boolean {
+  private checkDriverNo(driverNo: number): boolean {
     // TODO driverNo 로 driver 존재 체크
     return driverNo !== 0;
   }
 
-  checkCarNum(carNum: string): boolean {
+  private checkCarNum(carNum: string): boolean {
     // 차량번호 정규식 체크
     // ex) 12가 1234 || 123가 1234
     // 숫자 2,3개 허용
@@ -205,7 +205,7 @@ export class TaxiService {
     return regex.test(carNum);
   }
 
-  checkCarType(carType: CarType): boolean {
+  private checkCarType(carType: CarType): boolean {
     // 선언된 CarType으로 체크
     return carType in CarType;
   }
