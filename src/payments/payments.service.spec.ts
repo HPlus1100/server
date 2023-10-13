@@ -18,7 +18,12 @@ describe('PaymentsService', () => {
 
   describe('findAll', () => {
     describe('when getting all payments', () => {
-      it.todo('should return an array of payments');
+      it('should return an array of payments', () => {
+        const want: Payment[] = [];
+        const got = service.findAll();
+
+        expect(got).toEqual(want);
+      });
     });
   });
   describe('findOne', () => {
