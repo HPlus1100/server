@@ -11,13 +11,19 @@ const createMockRepository = <T = any>(): MockRepository<T> => ({
 
 describe('PaymentsService', () => {
   let service: PaymentsService;
+  let paymentRepository: MockRepository;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
-      providers: [PaymentsService],
+      providers: [
+        PaymentsService,
+        { provide: DataSource, useValue: {} },
+        { provide: getRepositoryToken(Payment), useValue: createMockRepository() },
+      ],
     }).compile();
 
     service = module.get<PaymentsService>(PaymentsService);
+    paymentRepository = module.get<MockRepository>(getRepositoryToken(Payment));
   });
 
   it('should be defined', () => {
