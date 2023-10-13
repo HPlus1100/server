@@ -32,10 +32,10 @@ describe('PaymentsService', () => {
 
   describe('findAll', () => {
     describe('when getting all payments', () => {
-      it('should return an array of payments', () => {
+      it('should return an array of payments', async () => {
         const want: Payment[] = [new Payment(), new Payment(), new Payment()];
         paymentRepository.find.mockReturnValue(want);
-        const got = service.findAll();
+        const got = await service.findAll();
 
         expect(got).toEqual(want);
       });

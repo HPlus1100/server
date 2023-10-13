@@ -17,8 +17,8 @@ export class PaymentsService {
     return 'This action adds a new payment';
   }
 
-  findAll(): Promise<Payment[]> {
-    return this.paymentRepository.find({});
+  async findAll(): Promise<Payment[]> {
+    return await this.paymentRepository.find({});
   }
 
   findOne(id: number) {
