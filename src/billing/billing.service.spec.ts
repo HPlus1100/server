@@ -56,7 +56,7 @@ describe('BillingService', () => {
         const mockPaymentInfoDto: PaymentInfoDto = {
           customerNo: '12345',
           type: PaymentType.Card,
-          cardNum: '1234567812345678',
+          cardNum: '12345678123245678',
           cvc: '123',
           expireDate: '2025-12-01',
           isDefault: true,
