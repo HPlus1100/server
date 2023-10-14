@@ -3,11 +3,32 @@ import { PaymentsService } from './payments.service';
 import { getRepositoryToken } from '@nestjs/typeorm';
 import { Payment } from '@payments/entities/payment.entity';
 import { DataSource, Repository } from 'typeorm';
+import { PaymentRepository } from '@payments/payment.repository';
 
 type MockRepository<T = any> = Partial<Record<keyof Repository<T>, jest.Mock>>
-const createMockRepository = <T = any>(): MockRepository<T> => ({
-  find: jest.fn(),
-});
+
+class MockRepositoryFactory {
+
+  static getMockRepository<T>(type: new (...args: any[]) => T): MockRepository<T> {
+    const mockRepository: MockRepository<T> = {};
+
+    Object.getOwnPropertyNames(Repository.prototype)
+      .filter((key: string) => key !== 'constructor')
+      .forEach((key: string) => {
+        mockRepository[key] = jest.fn();
+      });
+
+    Object.getOwnPropertyNames(type.prototype)
+      .filter((key: string) => key !== 'constructor')
+      .forEach((key: string) => {
+        mockRepository[key] = type.prototype[key];
+      });
+
+    return mockRepository;
+  }
+}
+
+const mockPaymentRepository = MockRepositoryFactory.getMockRepository(PaymentRepository);
 
 describe('PaymentsService', () => {
   let service: PaymentsService;
@@ -18,7 +39,7 @@ describe('PaymentsService', () => {
       providers: [
         PaymentsService,
         { provide: DataSource, useValue: {} },
-        { provide: getRepositoryToken(Payment), useValue: createMockRepository() },
+        { provide: getRepositoryToken(Payment), useValue: mockPaymentRepository },
       ],
     }).compile();
 
