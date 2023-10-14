@@ -3,13 +3,13 @@ import { CreatePaymentDto } from './dto/create-payment.dto';
 import { UpdatePaymentDto } from './dto/update-payment.dto';
 import { Payment } from '@payments/entities/payment.entity';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { PaymentRepository } from '@payments/payment.repository';
 
 @Injectable()
 export class PaymentsService {
   constructor(
     @InjectRepository(Payment)
-    private readonly paymentRepository: Repository<Payment>,
+    private readonly paymentRepository: PaymentRepository,
   ) {
   }
   
