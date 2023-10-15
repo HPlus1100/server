@@ -19,7 +19,6 @@ export class LocalApiRepository {
   }
 
   async getAxisbyAddress(address: string): Promise<unknown> {
-    this.logger.log(this.httpService.axiosRef.defaults.headers.Authorization);
     const { data } = await firstValueFrom(
       this.httpService
         .get(`https://dapi.kakao.com/v2/local/search/address`, {
