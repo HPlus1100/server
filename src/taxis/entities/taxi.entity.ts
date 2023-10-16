@@ -12,8 +12,8 @@ export class Taxi extends BaseEntity {
   @PrimaryGeneratedColumn('increment', { type: 'bigint' })
   no: number;
 
-  @Column({ type: 'bigint', name: 'driver_no', nullable: false })
-  driverNo: number;
+  @Column({ type: 'bigint', name: 'driver_license_number', nullable: false })
+  driverLicenseNumber: number;
 
   @Column({
     type: 'enum',
@@ -33,8 +33,13 @@ export class Taxi extends BaseEntity {
   })
   companyName: string;
 
-  @Column({ type: 'varchar', length: 50, name: 'car_num', nullable: false })
-  carNum: string;
+  @Column({
+    type: 'varchar',
+    length: 50,
+    name: 'license_plate_number',
+    nullable: false,
+  })
+  licensePlateNumber: string;
 
   @Column({ type: 'varchar', length: 255, name: 'car_model', nullable: false })
   carModel: string;

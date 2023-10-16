@@ -7,7 +7,7 @@ export class ResponseTaxiDto {
   no: number;
 
   @Expose()
-  driverNo: number;
+  driverLicenseNumber: number;
 
   @Expose()
   carType: CarType;
@@ -16,7 +16,7 @@ export class ResponseTaxiDto {
   companyName: string;
 
   @Expose()
-  carNum: string;
+  licensePlateNumber: string;
 
   @Expose()
   carModel: string;

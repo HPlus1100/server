@@ -27,7 +27,7 @@ export class TaxisService {
   async getAllTaxiInfo(): Promise<Taxi[]> {
     // 사용자 권한 확인
     if (!this.checkAuthenticated()) {
-      throw new UnauthorizedException(`Current user is unauthorized`);
+      throw new UnauthorizedException(`Current User is unauthorized`);
     }
 
     const AllTaxiInfo = await this.taxiRepository.find();
@@ -39,7 +39,7 @@ export class TaxisService {
   async getTaxiInfoById(taxiId: number): Promise<Taxi> {
     // 사용자 권한 확인
     if (!this.checkAuthenticated()) {
-      throw new UnauthorizedException(`Current user is unauthorized`);
+      throw new UnauthorizedException(`Current User is unauthorized`);
     }
 
     // 택시 id 존재 확인
@@ -48,7 +48,7 @@ export class TaxisService {
     });
 
     if (!taxiInfo) {
-      throw new NotFoundException(`Can't find taxi with id ${taxiId}`);
+      throw new NotFoundException(`Can't find Taxi with id ${taxiId}`);
     }
 
     return taxiInfo;
@@ -56,11 +56,11 @@ export class TaxisService {
 
   // 택시 정보 등록
   async createTaxiInfo(createTaxiDto: CreateTaxiDto): Promise<ResponseTaxiDto> {
-    const { driverNo, carType, carNum } = createTaxiDto;
+    const { driverLicenseNumber, carType, licensePlateNumber } = createTaxiDto;
 
     // 사용자 권한 확인
     if (!this.checkAuthenticated()) {
-      throw new UnauthorizedException(`Current user is unauthorized`);
+      throw new UnauthorizedException(`Current User is unauthorized`);
     }
 
     /**
@@ -74,8 +74,10 @@ export class TaxisService {
      */
 
     // 드라이버 존재 확인
-    if (!this.checkDriverNo(driverNo)) {
-      throw new NotFoundException(`Can't find driver no ${driverNo}`);
+    if (!this.checkDriverLicenseNumber(driverLicenseNumber)) {
+      throw new NotFoundException(
+        `Can't find Driver's License Number : ${driverLicenseNumber}`,
+      );
     }
 
     // TODO 운전 면허증 번호 확인
@@ -86,8 +88,10 @@ export class TaxisService {
     }
 
     // 차량 번호 확인
-    if (!this.checkCarNum(carNum)) {
-      throw new Error(`Car Num is invalid : ${carNum}`);
+    if (!this.checkLicensePlateNumber(licensePlateNumber)) {
+      throw new Error(
+        `License Plate Number is invalid : ${licensePlateNumber}`,
+      );
     }
 
     const newTaxiInfo = this.taxiRepository.create({
@@ -104,11 +108,11 @@ export class TaxisService {
     taxiId: number,
     updateTaxiDto: UpdateTaxiDto,
   ): Promise<ResponseTaxiDto> {
-    const { driverNo, carType, carNum } = updateTaxiDto;
+    const { driverLicenseNumber, carType, licensePlateNumber } = updateTaxiDto;
 
     // 사용자 권한 확인
     if (!this.checkAuthenticated()) {
-      throw new UnauthorizedException(`Current user is unauthorized`);
+      throw new UnauthorizedException(`Current User is unauthorized`);
     }
 
     /**
@@ -127,13 +131,15 @@ export class TaxisService {
     });
 
     if (!taxiInfo) {
-      throw new NotFoundException(`Can't find taxi with id ${taxiId}`);
+      throw new NotFoundException(`Can't find Taxi with id ${taxiId}`);
     }
 
     // 드라이버 존재 확인
     // TODO DB 조회로 바뀌어야 할 거 같음
-    if (!this.checkDriverNo(driverNo)) {
-      throw new NotFoundException(`Can't find driver no ${driverNo}`);
+    if (!this.checkDriverLicenseNumber(driverLicenseNumber)) {
+      throw new NotFoundException(
+        `Can't find Driver's License Number ${driverLicenseNumber}`,
+      );
     }
 
     // TODO 운전 면허증 번호 확인
@@ -144,8 +150,10 @@ export class TaxisService {
     }
 
     // 차량 번호 확인
-    if (!this.checkCarNum(carNum)) {
-      throw new Error(`Car Num is invalid : ${carNum}`);
+    if (!this.checkLicensePlateNumber(licensePlateNumber)) {
+      throw new Error(
+        `License Plate Number is invalid : ${licensePlateNumber}`,
+      );
     }
 
     await this.taxiRepository.update(taxiId, {
@@ -159,7 +167,7 @@ export class TaxisService {
   async deleteTaxiInfoById(taxiId: number): Promise<ResponseTaxiDto> {
     // 사용자 권한 확인
     if (!this.checkAuthenticated()) {
-      throw new UnauthorizedException(`Current user is unauthorized`);
+      throw new UnauthorizedException(`Current User is unauthorized`);
     }
 
     // 택시 id 존재 확인
@@ -168,7 +176,7 @@ export class TaxisService {
     });
 
     if (!taxiInfo) {
-      throw new NotFoundException(`Can't find taxi with id ${taxiId}`);
+      throw new NotFoundException(`Can't find Taxi with id ${taxiId}`);
     }
 
     // TODO Delete 호출이 아닌 Update 처리 필요
@@ -190,19 +198,19 @@ export class TaxisService {
     return true;
   }
 
-  private checkDriverNo(driverNo: number): boolean {
-    // TODO driverNo 로 driver 존재 체크
-    return driverNo !== 0;
+  private checkDriverLicenseNumber(driverLicenseNumber: number): boolean {
+    // TODO driverLicenseNumber 로 driver 존재 체크
+    return driverLicenseNumber !== 0;
   }
 
-  private checkCarNum(carNum: string): boolean {
+  private checkLicensePlateNumber(licensePlateNumber: string): boolean {
     // 차량번호 정규식 체크
     // ex) 12가 1234 || 123가 1234
     // 숫자 2,3개 허용
     // 한글 1개 허용
     // 숫자 4자
     const regex = /\d{2,3}[가-힣]{1}\d{4}/;
-    return regex.test(carNum);
+    return regex.test(licensePlateNumber);
   }
 
   private checkCarType(carType: CarType): boolean {

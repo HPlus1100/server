@@ -3,7 +3,7 @@ import { CarType } from '../types/taxi.enum';
 
 export class UpdateTaxiDto {
   @IsInt()
-  driverNo: number;
+  driverLicenseNumber: number;
 
   carType: CarType;
 
@@ -11,7 +11,7 @@ export class UpdateTaxiDto {
   companyName: string;
 
   @IsString()
-  carNum: string;
+  licensePlateNumber: string;
 
   @IsString()
   carModel: string;

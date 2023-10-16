@@ -64,21 +64,21 @@ describe('With pg-mem, TypeORM의 Taxi Repository Test', () => {
   it('create taxi entity test', async () => {
     const createTaxi = await taxiRepository
       .create({
-        driverNo: 131112345678,
+        driverLicenseNumber: 131112345678,
         carType: CarType.NORMAL,
         companyName: 'Hyundai',
-        carNum: '68오8269',
+        licensePlateNumber: '68오8269',
         carModel: '쏘나타',
       })
       .save();
 
-    expect(createTaxi.driverNo).toBe(131112345678);
+    expect(createTaxi.driverLicenseNumber).toBe(131112345678);
   });
 
   it('select taxi entity test', async () => {
     const taxi = await taxiRepository.findOne({ where: { no: 1 } });
 
-    expect(taxi.carNum).toBe('68오8269');
+    expect(taxi.licensePlateNumber).toBe('68오8269');
   });
 
   it('taxi service - getAllTaxiInfo test', async () => {

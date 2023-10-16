@@ -42,10 +42,10 @@ describe('With pg-mem, Taxi Domain Unit Test', () => {
     // create sample TaxiInfo
     await taxiRepository
       .create({
-        driverNo: 131112345678,
+        driverLicenseNumber: 131112345678,
         carType: CarType.NORMAL,
         companyName: 'Hyundai',
-        carNum: '68오8269',
+        licensePlateNumber: '68오8269',
         carModel: '쏘나타',
       })
       .save();
@@ -79,10 +79,10 @@ describe('With pg-mem, Taxi Domain Unit Test', () => {
 
   it('create success case test - taxiService.createTaxiInfo', async () => {
     const taxiInfo = {
-      driverNo: 369112332111,
+      driverLicenseNumber: 369112332111,
       carType: CarType.NORMAL,
       companyName: 'Tesla',
-      carNum: '68허8269',
+      licensePlateNumber: '68허8269',
       carModel: 'Model Y',
     };
 
@@ -97,7 +97,6 @@ describe('With pg-mem, Taxi Domain Unit Test', () => {
     delete taxi.no;
     delete taxi.createdAt;
 
-    // TOBO 뭔가 이상함 그냥 plainToClass 안해도 no 같은거 안들어가야할거 같은데 들어감
     const newTaxi = await taxiService.updateTaxiInfoById(
       1,
       plainToClass(UpdateTaxiDto, {
@@ -111,10 +110,10 @@ describe('With pg-mem, Taxi Domain Unit Test', () => {
 
   it('remove success case test - taxiService.deleteTaxiInfoById', async () => {
     const taxi = await taxiService.getTaxiInfoById(1);
-    expect(taxi.driverNo).toBe(131112345678);
+    expect(taxi.driverLicenseNumber).toBe(131112345678);
 
     const oldTaxi = await taxiService.deleteTaxiInfoById(1);
-    expect(oldTaxi.driverNo).toBe(131112345678);
+    expect(oldTaxi.driverLicenseNumber).toBe(131112345678);
 
     expect(async () => {
       await taxiService.getTaxiInfoById(1);
