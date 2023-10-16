@@ -7,6 +7,18 @@ export class ResponseTaxiDto {
   no: number;
 
   @Expose()
+  userNo: number;
+
+  @Expose()
+  name: string;
+
+  @Expose()
+  phone: string;
+
+  @Expose()
+  profileImg: string;
+
+  @Expose()
   driverLicenseNumber: number;
 
   @Expose()
@@ -20,4 +32,10 @@ export class ResponseTaxiDto {
 
   @Expose()
   carModel: string;
+
+  isDeleted: boolean;
+
+  cratedAt: Date;
+
+  updatedAt: Date;
 }

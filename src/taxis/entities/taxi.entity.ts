@@ -4,6 +4,7 @@ import {
   CreateDateColumn,
   Entity,
   PrimaryGeneratedColumn,
+  UpdateDateColumn,
 } from 'typeorm';
 import { CarType } from '../types/taxi.enum';
 
@@ -11,6 +12,33 @@ import { CarType } from '../types/taxi.enum';
 export class Taxi extends BaseEntity {
   @PrimaryGeneratedColumn('increment', { type: 'bigint' })
   no: number;
+
+  @Column({ type: 'bigint', name: 'user_no', nullable: false })
+  userNo: number;
+
+  @Column({
+    type: 'varchar',
+    length: 50,
+    name: 'name',
+    nullable: false,
+  })
+  name: string;
+
+  @Column({
+    type: 'varchar',
+    length: 50,
+    name: 'phone',
+    nullable: false,
+  })
+  phone: string;
+
+  @Column({
+    type: 'varchar',
+    length: 255,
+    name: 'profile_img',
+    nullable: false,
+  })
+  profileImg: string;
 
   @Column({ type: 'bigint', name: 'driver_license_number', nullable: false })
   driverLicenseNumber: number;
@@ -53,4 +81,11 @@ export class Taxi extends BaseEntity {
     default: () => 'CURRENT_TIMESTAMP',
   })
   createdAt: Date;
+
+  @UpdateDateColumn({
+    type: 'time with time zone',
+    name: 'updated_at',
+    default: () => 'CURRENT_TIMESTAMP',
+  })
+  updatedAt: Date;
 }

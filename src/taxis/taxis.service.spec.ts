@@ -79,6 +79,10 @@ describe('With pg-mem, Taxi Domain Unit Test', () => {
 
   it('create success case test - taxiService.createTaxiInfo', async () => {
     const taxiInfo = {
+      userNo: 1,
+      name: '김태훈',
+      phone: '010-1234-5678',
+      profileImg: 'imgUrl',
       driverLicenseNumber: 369112332111,
       carType: CarType.NORMAL,
       companyName: 'Tesla',

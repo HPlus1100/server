@@ -4,6 +4,22 @@ import { CarType } from '../types/taxi.enum';
 export class CreateTaxiDto {
   @IsNotEmpty()
   @IsInt()
+  userNo: number;
+
+  @IsNotEmpty()
+  @IsString()
+  name: string;
+
+  @IsNotEmpty()
+  @IsString()
+  phone: string;
+
+  @IsNotEmpty()
+  @IsString()
+  profileImg: string;
+
+  @IsNotEmpty()
+  @IsInt()
   driverLicenseNumber: number;
 
   @IsNotEmpty()
