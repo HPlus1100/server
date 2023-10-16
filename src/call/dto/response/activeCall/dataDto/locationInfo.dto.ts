@@ -5,9 +5,9 @@ export class LocationInfo {
   @Expose()
   address: string;
 
-  @Expose({ name: 'lat' })
-  latitude: number;
+  @Expose()
+  lat: number;
 
-  @Expose({ name: 'lng' })
-  longitude: number;
+  @Expose()
+  lng: number;
 }
