@@ -9,6 +9,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { TypeOrmConfigService } from './config/typeorm.config';
 import { CallModule } from './call/call.module';
 import { TaxisModule } from './taxis/taxis.module';
+import { BillingModule } from './billing/billing.module';
 
 @Module({
   imports: [
@@ -24,6 +25,7 @@ import { TaxisModule } from './taxis/taxis.module';
     }),
     CallModule,
     TaxisModule,
+    BillingModule,
   ],
   controllers: [AppController, HealthCheckController],
   providers: [AppService],
