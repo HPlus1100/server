@@ -8,7 +8,7 @@ import { ConfigModule } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { TypeOrmConfigService } from './config/typeorm.config';
 import { CallModule } from './call/call.module';
-import { TaxiModule } from './taxi/taxi.module';
+import { TaxisModule } from './taxis/taxis.module';
 
 @Module({
   imports: [
@@ -23,7 +23,7 @@ import { TaxiModule } from './taxi/taxi.module';
       useClass: TypeOrmConfigService,
     }),
     CallModule,
-    TaxiModule,
+    TaxisModule,
   ],
   controllers: [AppController, HealthCheckController],
   providers: [AppService],

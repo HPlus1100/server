@@ -5,7 +5,7 @@ import {
   Entity,
   PrimaryGeneratedColumn,
 } from 'typeorm';
-import { CarType } from './types/taxi.enum';
+import { CarType } from '../types/taxi.enum';
 
 @Entity('taxi')
 export class Taxi extends BaseEntity {
