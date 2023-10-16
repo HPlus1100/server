@@ -1,5 +1,5 @@
 import { Exclude, Expose } from 'class-transformer';
-import { CarType } from '../types/taxi.enum';
+import { CarType, TaxiStatus } from '../types/taxi.enum';
 
 @Exclude()
 export class ResponseTaxiDto {
@@ -8,6 +8,9 @@ export class ResponseTaxiDto {
 
   @Expose()
   userNo: number;
+
+  @Expose()
+  taxiStatus: TaxiStatus;
 
   @Expose()
   name: string;

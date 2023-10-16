@@ -1,10 +1,13 @@
 import { IsInt, IsNotEmpty, IsString } from 'class-validator';
-import { CarType } from '../types/taxi.enum';
+import { CarType, TaxiStatus } from '../types/taxi.enum';
 
 export class CreateTaxiDto {
   @IsNotEmpty()
   @IsInt()
   userNo: number;
+
+  @IsNotEmpty()
+  taxiStatus: TaxiStatus;
 
   @IsNotEmpty()
   @IsString()

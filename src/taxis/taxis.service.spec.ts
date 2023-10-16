@@ -1,7 +1,7 @@
 import { DataSource, Repository } from 'typeorm';
 import { Taxi } from './entities/taxi.entity';
 import { newDb } from 'pg-mem';
-import { CarType } from './types/taxi.enum';
+import { CarType, TaxiStatus } from './types/taxi.enum';
 import { TaxisService } from './taxis.service';
 import { TaxiRepository } from './taxi.repository';
 import { Test, TestingModule } from '@nestjs/testing';
@@ -42,6 +42,7 @@ describe('With pg-mem, Taxi Domain Unit Test', () => {
     await taxiRepository
       .create({
         userNo: 1,
+        taxiStatus: TaxiStatus.PENDING,
         name: '김태훈',
         phone: '010-1234-5678',
         profileImg: 'imgUrl',
@@ -83,6 +84,7 @@ describe('With pg-mem, Taxi Domain Unit Test', () => {
   it('create success case test', async () => {
     const taxiInfo = {
       userNo: 1,
+      taxiStatus: TaxiStatus.PENDING,
       name: '김태훈',
       phone: '010-1234-5678',
       profileImg: 'imgUrl',

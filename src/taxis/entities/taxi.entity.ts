@@ -6,7 +6,7 @@ import {
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
-import { CarType } from '../types/taxi.enum';
+import { CarType, TaxiStatus } from '../types/taxi.enum';
 
 @Entity('taxi')
 export class Taxi extends BaseEntity {
@@ -15,6 +15,17 @@ export class Taxi extends BaseEntity {
 
   @Column({ type: 'bigint', name: 'user_no', nullable: false })
   userNo: number;
+
+  // TODO: Taxi Status Entity 로 분리 작업
+  @Column({
+    type: 'enum',
+    enum: TaxiStatus,
+    nullable: false,
+    default: TaxiStatus.PENDING,
+    comment: 'PENDING | COMPLETE | ARRIVED | CANCELLED',
+    name: 'taxi_status',
+  })
+  taxiStatus: TaxiStatus;
 
   @Column({
     type: 'varchar',
