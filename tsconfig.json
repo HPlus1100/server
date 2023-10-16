@@ -17,7 +17,7 @@
       "@/*": ["src/*"],
       "@test/*": ["test/*"],
       "@call/*": ["src/call/*"],
-      "@taxis/*": ["src/taxis/*"]
+      "@taxis/*": ["src/taxis/*"],
       "@billing/*": ["./src/billing/*"]
     }
   },
