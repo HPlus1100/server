@@ -1,15 +1,10 @@
-import { TestingModule, Test } from '@nestjs/testing';
-import { TypeOrmModule } from '@nestjs/typeorm';
 import { newDb } from 'pg-mem';
 import { DataSource, Repository } from 'typeorm';
 import { Taxi } from './entities/taxi.entity';
-import { TaxiRepository } from './taxi.repository';
-import { TaxisService } from './taxis.service';
 import { CarType } from './types/taxi.enum';
 
 describe('With pg-mem, TypeORM의 Taxi Repository Test', () => {
   let dataSource: DataSource;
-  let taxisService: TaxisService;
   let taxiRepository: Repository<Taxi>;
 
   beforeAll(async () => {
@@ -39,16 +34,6 @@ describe('With pg-mem, TypeORM의 Taxi Repository Test', () => {
     await dataSource.synchronize();
 
     taxiRepository = dataSource.getRepository(Taxi);
-
-    const module: TestingModule = await Test.createTestingModule({
-      imports: [TypeOrmModule.forRoot(), TypeOrmModule.forFeature([Taxi])],
-      providers: [TaxisService, TaxiRepository],
-    })
-      .overrideProvider(DataSource)
-      .useValue(dataSource)
-      .compile();
-
-    taxisService = module.get<TaxisService>(TaxisService);
   });
 
   afterAll(async () => {
@@ -64,6 +49,10 @@ describe('With pg-mem, TypeORM의 Taxi Repository Test', () => {
   it('create taxi entity test', async () => {
     const createTaxi = await taxiRepository
       .create({
+        userNo: 1,
+        name: '김태훈',
+        phone: '010-1234-5678',
+        profileImg: 'imgUrl',
         driverLicenseNumber: 131112345678,
         carType: CarType.NORMAL,
         companyName: 'Hyundai',
@@ -73,17 +62,5 @@ describe('With pg-mem, TypeORM의 Taxi Repository Test', () => {
       .save();
 
     expect(createTaxi.driverLicenseNumber).toBe(131112345678);
-  });
-
-  it('select taxi entity test', async () => {
-    const taxi = await taxiRepository.findOne({ where: { no: 1 } });
-
-    expect(taxi.licensePlateNumber).toBe('68오8269');
-  });
-
-  it('taxi service - getAllTaxiInfo test', async () => {
-    const taxis = await taxisService.getAllTaxiInfo();
-    expect(taxis.length).toBe(1);
-    expect(taxis[0].companyName).toBe('Hyundai');
   });
 });

@@ -3,12 +3,11 @@ import { Taxi } from './entities/taxi.entity';
 import { newDb } from 'pg-mem';
 import { CarType } from './types/taxi.enum';
 import { TaxisService } from './taxis.service';
-import { TaxiRepository } from '@taxis/taxi.repository';
+import { TaxiRepository } from './taxi.repository';
 import { Test, TestingModule } from '@nestjs/testing';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { plainToClass } from 'class-transformer';
-import { UpdateTaxiDto } from './dto/update-taxi.dto';
 import { NotFoundException } from '@nestjs/common';
+import { UpdateTaxiDto } from './dto/update-taxi.dto';
 
 describe('With pg-mem, Taxi Domain Unit Test', () => {
   let dataSource: DataSource;
@@ -42,6 +41,10 @@ describe('With pg-mem, Taxi Domain Unit Test', () => {
     // create sample TaxiInfo
     await taxiRepository
       .create({
+        userNo: 1,
+        name: '김태훈',
+        phone: '010-1234-5678',
+        profileImg: 'imgUrl',
         driverLicenseNumber: 131112345678,
         carType: CarType.NORMAL,
         companyName: 'Hyundai',
@@ -66,18 +69,18 @@ describe('With pg-mem, Taxi Domain Unit Test', () => {
     await dataSource.destroy();
   });
 
-  it('findAll success case test - taxiService.getAllTaxiInfo', async () => {
-    const taxis = await taxiService.getAllTaxiInfo();
+  it('findAll success case test', async () => {
+    const taxis = await taxiService.findAll();
     expect(taxis.length).toBe(1);
     expect(taxis[0].companyName).toBe('Hyundai');
   });
 
-  it('findOne success case test - taxiService.getTaxiInfoById', async () => {
-    const taxi = await taxiService.getTaxiInfoById(1); //id 1부터 시작...
+  it('findOne success case test', async () => {
+    const taxi = await taxiService.findOne(1); //id 1부터 시작...
     expect(taxi.carModel).toBe('쏘나타');
   });
 
-  it('create success case test - taxiService.createTaxiInfo', async () => {
+  it('create success case test', async () => {
     const taxiInfo = {
       userNo: 1,
       name: '김태훈',
@@ -90,37 +93,38 @@ describe('With pg-mem, Taxi Domain Unit Test', () => {
       carModel: 'Model Y',
     };
 
-    const taxi = await taxiService.createTaxiInfo(taxiInfo);
+    const taxi = await taxiService.create(taxiInfo);
     expect(taxi.companyName).toBe('Tesla');
   });
 
-  it('update success case test - taxiService.updateTaxiInfoById', async () => {
-    const taxi = await taxiService.getTaxiInfoById(1);
+  it('update success case test', async () => {
+    const taxi = await taxiService.findOne(1);
     expect(taxi.carModel).toBe('쏘나타');
 
+    // TODO delete 처리 안하고 updateTaxiDto에 넣는 방법 찾기
     delete taxi.no;
+    delete taxi.updatedAt;
     delete taxi.createdAt;
 
-    const newTaxi = await taxiService.updateTaxiInfoById(
-      1,
-      plainToClass(UpdateTaxiDto, {
-        ...taxi,
-        carModel: '아이오닉',
-      }),
-    );
+    const updateTaxiDto: UpdateTaxiDto = {
+      ...taxi,
+      carModel: '아이오닉',
+    };
+
+    const newTaxi = await taxiService.update(1, updateTaxiDto);
 
     expect(newTaxi.carModel).toBe('아이오닉');
   });
 
   it('remove success case test - taxiService.deleteTaxiInfoById', async () => {
-    const taxi = await taxiService.getTaxiInfoById(1);
+    const taxi = await taxiService.findOne(1);
     expect(taxi.driverLicenseNumber).toBe(131112345678);
 
-    const oldTaxi = await taxiService.deleteTaxiInfoById(1);
+    const oldTaxi = await taxiService.remove(1);
     expect(oldTaxi.driverLicenseNumber).toBe(131112345678);
 
     expect(async () => {
-      await taxiService.getTaxiInfoById(1);
+      await taxiService.findOne(1);
     }).rejects.toThrowError(NotFoundException);
   });
 });

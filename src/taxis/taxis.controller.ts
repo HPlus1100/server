@@ -20,36 +20,34 @@ export class TaxisController {
 
   // 전체 택시 정보 조회
   @Get()
-  getAllTaxiInfo(): Promise<Taxi[]> {
-    return this.taxisService.getAllTaxiInfo();
+  findAll(): Promise<Taxi[]> {
+    return this.taxisService.findAll();
   }
 
   // 택시 Id로 택시 정보 조회
   @Get(':id')
-  getTaxiInfoById(@Param('id', ParseIntPipe) taxiId: number): Promise<Taxi> {
-    return this.taxisService.getTaxiInfoById(taxiId);
+  findOne(@Param('id', ParseIntPipe) taxiId: number): Promise<Taxi> {
+    return this.taxisService.findOne(taxiId);
   }
 
   // 택시 정보 등록
   @Post()
-  createTaxiInfo(@Body() taxiInfo: CreateTaxiDto): Promise<ResponseTaxiDto> {
-    return this.taxisService.createTaxiInfo(taxiInfo);
+  create(@Body() taxiInfo: CreateTaxiDto): Promise<ResponseTaxiDto> {
+    return this.taxisService.create(taxiInfo);
   }
 
   // 택시 정보 수정
   @Patch(':id')
-  updateTaxiInfoById(
+  update(
     @Param('id', ParseIntPipe) taxiId: number,
     @Body() taxiInfo: UpdateTaxiDto,
   ): Promise<ResponseTaxiDto> {
-    return this.taxisService.updateTaxiInfoById(taxiId, taxiInfo);
+    return this.taxisService.update(taxiId, taxiInfo);
   }
 
   // 택시 정보 삭제
   @Delete(':id')
-  deleteTaxiInfoById(
-    @Param('id', ParseIntPipe) taxiId: number,
-  ): Promise<ResponseTaxiDto> {
-    return this.taxisService.deleteTaxiInfoById(taxiId);
+  remove(@Param('id', ParseIntPipe) taxiId: number): Promise<ResponseTaxiDto> {
+    return this.taxisService.remove(taxiId);
   }
 }

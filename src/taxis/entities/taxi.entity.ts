@@ -76,14 +76,14 @@ export class Taxi extends BaseEntity {
   isDeleted: boolean;
 
   @CreateDateColumn({
-    type: 'time with time zone',
+    type: 'timestamptz',
     name: 'created_at',
     default: () => 'CURRENT_TIMESTAMP',
   })
   createdAt: Date;
 
   @UpdateDateColumn({
-    type: 'time with time zone',
+    type: 'timestamptz',
     name: 'updated_at',
     default: () => 'CURRENT_TIMESTAMP',
   })

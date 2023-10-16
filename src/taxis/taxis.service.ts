@@ -24,38 +24,38 @@ export class TaxisService {
  */
 
   // 전체 택시 정보 조회
-  async getAllTaxiInfo(): Promise<Taxi[]> {
+  async findAll(): Promise<Taxi[]> {
     // 사용자 권한 확인
     if (!this.checkAuthenticated()) {
       throw new UnauthorizedException(`Current User is unauthorized`);
     }
 
-    const AllTaxiInfo = await this.taxiRepository.find();
+    const taxis = await this.taxiRepository.find();
 
-    return AllTaxiInfo;
+    return taxis;
   }
 
   // 택시 Id로 택시 정보 조회
-  async getTaxiInfoById(taxiId: number): Promise<Taxi> {
+  async findOne(taxiId: number): Promise<Taxi> {
     // 사용자 권한 확인
     if (!this.checkAuthenticated()) {
       throw new UnauthorizedException(`Current User is unauthorized`);
     }
 
     // 택시 id 존재 확인
-    const taxiInfo = await this.taxiRepository.findOneBy({
+    const taxi = await this.taxiRepository.findOneBy({
       no: taxiId,
     });
 
-    if (!taxiInfo) {
+    if (!taxi) {
       throw new NotFoundException(`Can't find Taxi with id ${taxiId}`);
     }
 
-    return taxiInfo;
+    return taxi;
   }
 
   // 택시 정보 등록
-  async createTaxiInfo(createTaxiDto: CreateTaxiDto): Promise<ResponseTaxiDto> {
+  async create(createTaxiDto: CreateTaxiDto): Promise<ResponseTaxiDto> {
     const { driverLicenseNumber, carType, licensePlateNumber } = createTaxiDto;
 
     // 사용자 권한 확인
@@ -94,17 +94,17 @@ export class TaxisService {
       );
     }
 
-    const newTaxiInfo = this.taxiRepository.create({
+    const newTaxi = this.taxiRepository.create({
       ...createTaxiDto,
     });
 
-    await this.taxiRepository.save(newTaxiInfo);
+    await this.taxiRepository.save(newTaxi);
 
-    return plainToInstance(ResponseTaxiDto, newTaxiInfo);
+    return plainToInstance(ResponseTaxiDto, newTaxi);
   }
 
   // 택시 정보 수정
-  async updateTaxiInfoById(
+  async update(
     taxiId: number,
     updateTaxiDto: UpdateTaxiDto,
   ): Promise<ResponseTaxiDto> {
@@ -126,11 +126,11 @@ export class TaxisService {
      */
 
     // 택시 id 존재 확인
-    const taxiInfo = await this.taxiRepository.findOneBy({
+    const taxi = await this.taxiRepository.findOneBy({
       no: taxiId,
     });
 
-    if (!taxiInfo) {
+    if (!taxi) {
       throw new NotFoundException(`Can't find Taxi with id ${taxiId}`);
     }
 
@@ -164,18 +164,18 @@ export class TaxisService {
   }
 
   // 택시 정보 삭제
-  async deleteTaxiInfoById(taxiId: number): Promise<ResponseTaxiDto> {
+  async remove(taxiId: number): Promise<ResponseTaxiDto> {
     // 사용자 권한 확인
     if (!this.checkAuthenticated()) {
       throw new UnauthorizedException(`Current User is unauthorized`);
     }
 
     // 택시 id 존재 확인
-    const taxiInfo = await this.taxiRepository.findOneBy({
+    const taxi = await this.taxiRepository.findOneBy({
       no: taxiId,
     });
 
-    if (!taxiInfo) {
+    if (!taxi) {
       throw new NotFoundException(`Can't find Taxi with id ${taxiId}`);
     }
 
@@ -188,7 +188,7 @@ export class TaxisService {
       throw new NotFoundException(`${taxiId} is not exist`);
     }
 
-    return plainToInstance(ResponseTaxiDto, taxiInfo);
+    return plainToInstance(ResponseTaxiDto, taxi);
   }
 
   // 아래 내용을 Component 처리하는지 확인 필요
