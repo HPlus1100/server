@@ -10,7 +10,7 @@ export class DailyEarnings {
 
   @Column({
     type: 'date',
-    default: () => 'CURRENT_DATE',
+    default: () => 'CURRENT_TIMESTAMP',
     nullable: false,
     name: 'earning_date',
   })
