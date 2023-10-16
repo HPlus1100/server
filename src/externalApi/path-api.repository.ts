@@ -3,6 +3,7 @@ import { Injectable, Logger } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { AxiosError } from 'axios';
 import { catchError, firstValueFrom } from 'rxjs';
+import { PathApiEntity } from './path-api.entity';
 
 interface Path {
   origin: {
@@ -28,7 +29,7 @@ export class PathApiRepository {
       'application/json';
   }
 
-  async getPathInfo(path: Path): Promise<unknown> {
+  async getPathInfo(path: Path): Promise<PathApiEntity> {
     const { origin, destination } = path;
     const { data } = await firstValueFrom(
       this.httpService
@@ -45,6 +46,18 @@ export class PathApiRepository {
           }),
         ),
     );
-    return data;
+    const totalFare = Object.entries(data.routes[0].summary.fare).reduce(
+      (acc, [, value]: [string, number]) => {
+        acc += value;
+        return acc;
+      },
+      0,
+    );
+    const res: PathApiEntity = {
+      fare: totalFare,
+      distance: data.routes[0].summary.distance,
+      duration: data.routes[0].summary.duration,
+    };
+    return res;
   }
 }
