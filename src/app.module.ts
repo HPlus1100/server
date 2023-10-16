@@ -8,6 +8,7 @@ import { ConfigModule } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { TypeOrmConfigService } from './config/typeorm.config';
 import { CallModule } from './call/call.module';
+import { BillingModule } from './billing/billing.module';
 
 @Module({
   imports: [
@@ -22,6 +23,7 @@ import { CallModule } from './call/call.module';
       useClass: TypeOrmConfigService,
     }),
     CallModule,
+    BillingModule,
   ],
   controllers: [AppController, HealthCheckController],
   providers: [AppService],
