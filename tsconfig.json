@@ -17,7 +17,7 @@
       "@/*": ["src/*"],
       "@test/*": ["test/*"],
       "@call/*": ["src/call/*"],
-      "@taxi/*": ["src/taxi/*"]
+      "@taxis/*": ["src/taxis/*"]
     }
   },
   "watchOptions": {

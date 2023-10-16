@@ -8,12 +8,12 @@ import { plainToInstance } from 'class-transformer';
 import { CreateTaxiDto } from './dto/create-taxi.dto';
 import { ResponseTaxiDto } from './dto/response-taxi.dto';
 import { UpdateTaxiDto } from './dto/update-taxi.dto';
-import { Taxi } from './taxi.entity';
+import { Taxi } from './entities/taxi.entity';
 import { TaxiRepository } from './taxi.repository';
 import { CarType } from './types/taxi.enum';
 
 @Injectable()
-export class TaxiService {
+export class TaxisService {
   constructor(
     @InjectRepository(TaxiRepository)
     private taxiRepository: TaxiRepository,
