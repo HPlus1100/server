@@ -1,8 +1,8 @@
 import { Injectable } from '@nestjs/common';
-import { PaymentInfoDto } from './domain/dto/payment-info.dto';
-import { DailyEarningDTO } from './domain/dto/daily-earning.dto';
-import { PaymentRepository } from './repository/payment.repository';
-import { DailyEarningsRepository } from './repository/daily-earning.repository';
+import { PaymentInfoDto } from '@billing/domain/dto/payment-info.dto';
+import { DailyEarningDTO } from '@billing/domain/dto/daily-earning.dto';
+import { PaymentRepository } from '@billing/repository/payment.repository';
+import { DailyEarningsRepository } from '@billing/repository/daily-earning.repository';
 import { format } from 'date-fns';
 import { PaymentMethod } from '@billing/domain/entity/payment-method.entity';
 
@@ -19,8 +19,8 @@ export class BillingService {
     return await this.paymentRepository.save(paymentInfo);
   }
 
-  async getPaymentInfo(userId: string): Promise<PaymentMethod> {
-    return await this.paymentRepository.findByPaymentInfo(userId);
+  async getPaymentInfoByUserId(userId: string): Promise<PaymentMethod> {
+    return await this.paymentRepository.getPaymentInfoByUserId(userId);
   }
 
   /**
@@ -45,7 +45,7 @@ export class BillingService {
 
       const results = Promise.all(
         formattedTargetDates.map((dateStr) =>
-          this.dailyEarningsRepository.findByDateAndUserId(userId, dateStr),
+          this.dailyEarningsRepository.getDailyEarningsForUser(userId, dateStr),
         ),
       );
 
@@ -59,10 +59,10 @@ export class BillingService {
     }
   }
 
-  async findByBankAccountNumber(
+  async getPaymentInfoByAccountNumber(
     accountNumber: PaymentInfoDto['accountNumber'],
   ) {
-    const result = await this.paymentRepository.findByAccountNumber(
+    const result = await this.paymentRepository.getPaymentInfoByAccountNumber(
       accountNumber,
     );
     return result;

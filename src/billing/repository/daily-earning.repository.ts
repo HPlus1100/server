@@ -1,5 +1,5 @@
 import { DataSource, Repository } from 'typeorm';
-import { DailyEarnings } from '../domain/entity/daily-earning.entity';
+import { DailyEarnings } from '@billing/domain/entity/daily-earning.entity';
 import { Injectable } from '@nestjs/common';
 
 @Injectable()
@@ -8,7 +8,7 @@ export class DailyEarningsRepository extends Repository<DailyEarnings> {
     super(DailyEarnings, dataSource.createEntityManager());
   }
 
-  findByDateAndUserId(
+  getDailyEarningsForUser(
     userId: DailyEarnings['dailyEarningNo'],
     earningDate: DailyEarnings['earningDate'],
   ): Promise<DailyEarnings[]> {

@@ -1,5 +1,5 @@
 import { DataSource, Repository } from 'typeorm';
-import { Billing } from '../domain/entity/billing.entity';
+import { Billing } from '@billing/domain/entity/billing.entity';
 import { Injectable } from '@nestjs/common';
 
 @Injectable()

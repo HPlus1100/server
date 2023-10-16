@@ -1,6 +1,6 @@
 import { Body, Controller, Get, Param, Post, Query } from '@nestjs/common';
-import { BillingService } from './billing.service';
-import { PaymentInfoDto } from './domain/dto/payment-info.dto';
+import { BillingService } from '@billing/billing.service';
+import { PaymentInfoDto } from '@billing/domain/dto/payment-info.dto';
 
 @Controller('billing')
 export class BillingController {
@@ -15,7 +15,7 @@ export class BillingController {
    */
   @Post('process')
   processBillingPayment(@Body() paymentInfo: PaymentInfoDto) {
-    const result = this.billingService.findByBankAccountNumber(
+    const result = this.billingService.getPaymentInfoByAccountNumber(
       paymentInfo['accountNumber'],
     );
     return result;
@@ -41,8 +41,8 @@ export class BillingController {
    */
   @Get('payment-info/:userId')
   selectPaymentInfo(@Param('userId') userId: string) {
-    this.billingService.getPaymentInfo(userId);
-    return `welcome! : ${userId} This service select your PaymentInfo`;
+    const result = this.billingService.getPaymentInfoByUserId(userId);
+    return result;
   }
 
   /**
@@ -61,9 +61,6 @@ export class BillingController {
       userId,
       earningsDates,
     );
-    return (
-      `welcome! : ${userId} This service select your DailyEarnings \n result : ` +
-      JSON.stringify(result)
-    );
+    return result;
   }
 }
