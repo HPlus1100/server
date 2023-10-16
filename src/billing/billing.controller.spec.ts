@@ -1,6 +1,6 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { BillingController } from './billing.controller';
-import { BillingService } from './billing.service';
+import { BillingController } from '@billing/billing.controller';
+import { BillingService } from '@billing/billing.service';
 import { PaymentInfoDto } from '@billing/domain/dto/payment-info.dto';
 import { PaymentType } from '@billing/domain/type/billing.enum';
 import { PaymentRepository } from '@billing/repository/payment.repository';
@@ -8,9 +8,9 @@ import { DailyEarningsRepository } from '@billing/repository/daily-earning.repos
 
 const createMockRepository = jest.fn(() => ({
   save: jest.fn(),
-  findByPaymentInfo: jest.fn(),
-  findByDateAndUserId: jest.fn(),
-  findByAccountNumber: jest.fn(),
+  getPaymentInfoByUserId: jest.fn(),
+  getDailyEarningsForUser: jest.fn(),
+  getPaymentInfoByAccountNumber: jest.fn(),
 }));
 
 describe('BillingController', () => {
@@ -63,10 +63,10 @@ describe('BillingController', () => {
     });
   });
 
-  describe('selectPaymentInfo -> findOne', () => {
+  describe('selectPaymentInfo by userid', () => {
     let selectSpy: jest.SpyInstance;
     beforeEach(() => {
-      selectSpy = jest.spyOn(service, 'getPaymentInfo');
+      selectSpy = jest.spyOn(service, 'getPaymentInfoByUserId');
     });
     afterEach(() => {
       selectSpy.mockReset();
@@ -74,12 +74,12 @@ describe('BillingController', () => {
 
     it('should call the service method and return a success string', async () => {
       const userId = 'testUser';
-      const expectedMessage = `welcome! : ${userId} This service select your PaymentInfo`;
+      const mockServiceResult = userId;
 
       selectSpy.mockReturnValue(userId);
 
       const result = controller.selectPaymentInfo(userId);
-      expect(result).toEqual(expectedMessage);
+      expect(result).toEqual(mockServiceResult);
     });
   });
 
@@ -105,11 +105,7 @@ describe('BillingController', () => {
 
       const result = await controller.getEarningsToday(userId, earningDate);
 
-      const expectedMessage =
-        `welcome! : ${userId} This service select your DailyEarnings \n result : ` +
-        JSON.stringify(mockEarnings);
-
-      expect(result).toEqual(expectedMessage);
+      expect(result).toEqual(mockEarnings);
     });
   });
 });
