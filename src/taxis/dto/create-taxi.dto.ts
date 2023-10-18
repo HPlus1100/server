@@ -18,10 +18,6 @@ export class CreateTaxiDto {
   phone: string;
 
   @IsNotEmpty()
-  @IsString()
-  profileImg: string;
-
-  @IsNotEmpty()
   @IsInt()
   driverLicenseNumber: number;
 

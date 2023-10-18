@@ -13,8 +13,8 @@ export class Taxi extends BaseEntity {
     type: 'enum',
     enum: TaxiStatus,
     nullable: false,
-    default: TaxiStatus.PENDING,
-    comment: 'PENDING | COMPLETE | ARRIVED | CANCELLED',
+    default: TaxiStatus.AVAILABLE,
+    comment: 'AVAILABLE | EN_ROUTE | OCCUPIED | OFF_DUTY',
     name: 'taxi_status',
   })
   taxiStatus: TaxiStatus;

@@ -21,8 +21,8 @@ export class Taxi extends BaseEntity {
     type: 'enum',
     enum: TaxiStatus,
     nullable: false,
-    default: TaxiStatus.PENDING,
-    comment: 'PENDING | COMPLETE | ARRIVED | CANCELLED',
+    default: TaxiStatus.AVAILABLE,
+    comment: 'AVAILABLE | EN_ROUTE | OCCUPIED | OFF_DUTY',
     name: 'taxi_status',
   })
   taxiStatus: TaxiStatus;
@@ -42,14 +42,6 @@ export class Taxi extends BaseEntity {
     nullable: false,
   })
   phone: string;
-
-  @Column({
-    type: 'varchar',
-    length: 255,
-    name: 'profile_img',
-    nullable: false,
-  })
-  profileImg: string;
 
   @Column({ type: 'bigint', name: 'driver_license_number', nullable: false })
   driverLicenseNumber: number;

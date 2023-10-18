@@ -42,10 +42,9 @@ describe('With pg-mem, Taxi Domain Unit Test', () => {
     await taxiRepository
       .create({
         userNo: 1,
-        taxiStatus: TaxiStatus.PENDING,
+        taxiStatus: TaxiStatus.AVAILABLE,
         name: '김태훈',
         phone: '010-1234-5678',
-        profileImg: 'imgUrl',
         driverLicenseNumber: 131112345678,
         carType: CarType.NORMAL,
         companyName: 'Hyundai',
@@ -84,10 +83,9 @@ describe('With pg-mem, Taxi Domain Unit Test', () => {
   it('create success case test', async () => {
     const taxiInfo = {
       userNo: 1,
-      taxiStatus: TaxiStatus.PENDING,
+      taxiStatus: TaxiStatus.AVAILABLE,
       name: '김태훈',
       phone: '010-1234-5678',
-      profileImg: 'imgUrl',
       driverLicenseNumber: 369112332111,
       carType: CarType.NORMAL,
       companyName: 'Tesla',

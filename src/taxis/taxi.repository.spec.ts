@@ -1,7 +1,7 @@
 import { newDb } from 'pg-mem';
 import { DataSource, Repository } from 'typeorm';
 import { Taxi } from './entities/taxi.entity';
-import { CarType } from './types/taxi.enum';
+import { CarType, TaxiStatus } from './types/taxi.enum';
 
 describe('With pg-mem, TypeORM의 Taxi Repository Test', () => {
   let dataSource: DataSource;
@@ -50,9 +50,9 @@ describe('With pg-mem, TypeORM의 Taxi Repository Test', () => {
     const createTaxi = await taxiRepository
       .create({
         userNo: 1,
+        taxiStatus: TaxiStatus.AVAILABLE,
         name: '김태훈',
         phone: '010-1234-5678',
-        profileImg: 'imgUrl',
         driverLicenseNumber: 131112345678,
         carType: CarType.NORMAL,
         companyName: 'Hyundai',

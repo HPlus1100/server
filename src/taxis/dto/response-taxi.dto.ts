@@ -19,9 +19,6 @@ export class ResponseTaxiDto {
   phone: string;
 
   @Expose()
-  profileImg: string;
-
-  @Expose()
   driverLicenseNumber: number;
 
   @Expose()
