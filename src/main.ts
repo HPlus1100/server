@@ -1,13 +1,20 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { ConfigService } from '@nestjs/config';
+import { createLogger, transports } from 'winston';
+import { WinstonModule } from 'nest-winston';
 
 interface EnvironmentVariables {
   PORT: number;
 }
 
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule);
+  // todo refactor & move code to a separate file
+  // todo configure according to NODE_ENV
+  const instance = createLogger({ transports: [new transports.Console()] });
+  const logger = WinstonModule.createLogger({ instance });
+
+  const app = await NestFactory.create(AppModule, { logger });
 
   const configService =
     app.get<ConfigService<EnvironmentVariables>>(ConfigService);
@@ -15,4 +22,5 @@ async function bootstrap() {
 
   await app.listen(port);
 }
+
 bootstrap();
