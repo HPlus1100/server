@@ -1,16 +1,16 @@
 import { Inject, Injectable } from '@nestjs/common';
-import { ConfigService, ConfigType } from '@nestjs/config';
+import { ConfigType } from '@nestjs/config';
 import { TypeOrmModuleOptions, TypeOrmOptionsFactory } from '@nestjs/typeorm';
 import databaseConfig from '@/config/database.config';
 import appConfig from '@/config/app.config';
 
 @Injectable()
 export class TypeOrmConfigService implements TypeOrmOptionsFactory {
-  constructor(private readonly configService: ConfigService,
-              @Inject(databaseConfig.KEY)
-              private readonly databaseConfiguration: ConfigType<typeof databaseConfig>,
-              @Inject(appConfig.KEY)
-              private readonly appConfiguration: ConfigType<typeof appConfig>) {
+  constructor(
+    @Inject(databaseConfig.KEY)
+    private readonly databaseConfiguration: ConfigType<typeof databaseConfig>,
+    @Inject(appConfig.KEY)
+    private readonly appConfiguration: ConfigType<typeof appConfig>) {
   }
 
   createTypeOrmOptions(): TypeOrmModuleOptions {
