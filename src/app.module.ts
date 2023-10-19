@@ -21,7 +21,7 @@ import { PaymentsModule } from './payments/payments.module';
       isGlobal: true,
     }),
     TypeOrmModule.forRootAsync({
-      imports: [ConfigModule],
+      imports: [ConfigModule.forFeature(databaseConfig)],
       useClass: TypeOrmConfigService,
     }),
     CallModule,
