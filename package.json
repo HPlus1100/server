@@ -84,7 +84,8 @@
       "^@/(.*)$": "<rootDir>/src/$1",
       "^@test/(.*)$": "<rootDir>/test/$1",
       "^@call/(.*)$": "<rootDir>/call/$1",
-      "^@billing/(.*)$": "<rootDir>/billing/$1"
+      "^@billing/(.*)$": "<rootDir>/billing/$1",
+      "^@payments/(.*)$": "<rootDir>/payments/$1"
     },
     "coverageDirectory": "../coverage",
     "testEnvironment": "node",

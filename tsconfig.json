@@ -18,7 +18,8 @@
       "@test/*": ["test/*"],
       "@call/*": ["src/call/*"],
       "@taxis/*": ["src/taxis/*"],
-      "@billing/*": ["./src/billing/*"]
+      "@billing/*": ["./src/billing/*"],
+      "@payments/*": ["./src/payments/*"]
     }
   },
   "watchOptions": {
