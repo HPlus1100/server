@@ -6,9 +6,12 @@ import appConfig from '@/config/app.config';
 
 @Injectable()
 export class TypeOrmConfigService implements TypeOrmOptionsFactory {
-  constructor(private readonly configService: ConfigService) {}
+  constructor(private readonly configService: ConfigService,
               @Inject(databaseConfig.KEY)
               private readonly databaseConfiguration: ConfigType<typeof databaseConfig>,
+              @Inject(appConfig.KEY)
+              private readonly appConfiguration: ConfigType<typeof appConfig>) {
+  }
 
   createTypeOrmOptions(): TypeOrmModuleOptions {
     return {
@@ -18,10 +21,7 @@ export class TypeOrmConfigService implements TypeOrmOptionsFactory {
       username: this.databaseConfiguration.username,
       password: this.databaseConfiguration.password,
       database: this.databaseConfiguration.database,
-      synchronize:
-        this.configService.get<string>('NODE_ENV') === 'development'
-          ? true
-          : false,
+      synchronize: this.appConfiguration.nodeEnv === 'development',
       entities: [__dirname + '/../**/*.entity{.ts,.js}'],
     };
   }
