@@ -6,7 +6,7 @@ on:
       - main
       - develop
 jobs:
-  Explore-GitHub-Actions:
+  test:
     runs-on: ubuntu-latest
     strategy:
       matrix:
