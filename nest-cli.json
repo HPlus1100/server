@@ -9,6 +9,7 @@
         "outDir": "./dist"
       }
     ],
-    "deleteOutDir": true
+    "deleteOutDir": true,
+    "builder": "swc"
   }
 }
