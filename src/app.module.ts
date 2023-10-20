@@ -11,17 +11,19 @@ import { CallModule } from './call/call.module';
 import { TaxisModule } from './taxis/taxis.module';
 import { BillingModule } from './billing/billing.module';
 import { PaymentsModule } from './payments/payments.module';
+import appConfig from '@/config/app.config';
+import databaseConfig from '@/config/database.config';
 
 @Module({
   imports: [
     TerminusModule,
     HttpModule,
     ConfigModule.forRoot({
-      envFilePath: [`${__dirname}/config/env/.env.${process.env.NODE_ENV}`],
+      load: [appConfig],
       isGlobal: true,
     }),
     TypeOrmModule.forRootAsync({
-      imports: [ConfigModule],
+      imports: [ConfigModule.forFeature(databaseConfig)],
       useClass: TypeOrmConfigService,
     }),
     CallModule,
