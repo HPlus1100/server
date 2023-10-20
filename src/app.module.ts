@@ -13,6 +13,8 @@ import { BillingModule } from '@billing/billing.module';
 import { PaymentsModule } from '@payments/payments.module';
 import appConfig from '@/config/app.config';
 import databaseConfig from '@/config/database.config';
+import { APP_INTERCEPTOR } from '@nestjs/core';
+import { LoggingInterceptor } from '@/interceptors/logging/logging.interceptor';
 
 @Module({
   imports: [
@@ -32,6 +34,7 @@ import databaseConfig from '@/config/database.config';
     }),
   ],
   controllers: [AppController, HealthCheckController],
-  providers: [AppService],
+  providers: [AppService, { provide: APP_INTERCEPTOR, useClass: LoggingInterceptor }],
 })
-export class AppModule {}
+export class AppModule {
+}
