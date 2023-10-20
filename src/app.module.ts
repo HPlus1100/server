@@ -16,20 +16,20 @@ import databaseConfig from '@/config/database.config';
 
 @Module({
   imports: [
-    TerminusModule,
-    HttpModule,
+    BillingModule,
+    CallModule,
     ConfigModule.forRoot({
       load: [appConfig],
       isGlobal: true,
     }),
+    HttpModule,
+    PaymentsModule,
+    TaxisModule,
+    TerminusModule,
     TypeOrmModule.forRootAsync({
       imports: [ConfigModule.forFeature(databaseConfig)],
       useClass: TypeOrmConfigService,
     }),
-    CallModule,
-    TaxisModule,
-    BillingModule,
-    PaymentsModule,
   ],
   controllers: [AppController, HealthCheckController],
   providers: [AppService],
