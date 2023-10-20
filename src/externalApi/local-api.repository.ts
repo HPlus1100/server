@@ -18,7 +18,7 @@ export class LocalApiRepository {
       'application/json';
   }
 
-  async getAxisbyAddress(address: string): Promise<unknown> {
+  async getCoordinate(address: string): Promise<unknown> {
     const { data } = await firstValueFrom(
       this.httpService
         .get(`https://dapi.kakao.com/v2/local/search/address`, {

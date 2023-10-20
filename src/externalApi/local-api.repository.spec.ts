@@ -19,9 +19,9 @@ describe('CallService', () => {
     expect(repository).toBeDefined();
   });
 
-  describe('AXIS 요청', () => {
+  describe('Coordinate 요청', () => {
     it('응답 값에 우편주소 속성이 있다.', async () => {
-      const response = await repository.getAxisbyAddress(
+      const response = await repository.getCoordinate(
         '서울시 마포구 독막로 266',
       );
 
