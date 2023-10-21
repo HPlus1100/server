@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { MiddlewareConsumer, Module, RequestMethod } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { HealthCheckController } from './health-check/health-check.controller';
@@ -13,8 +13,9 @@ import { BillingModule } from '@billing/billing.module';
 import { PaymentsModule } from '@payments/payments.module';
 import appConfig from '@/config/app.config';
 import databaseConfig from '@/config/database.config';
-import { APP_INTERCEPTOR } from '@nestjs/core';
-import { LoggingInterceptor } from '@/interceptors/logging/logging.interceptor';
+import { LoggerService } from '@/logger/logger.service';
+import { TraceIdMiddleware } from '@/logger/trace/trace-id.middleware';
+import { LoggingMiddleware } from '@/logger/logging.middleware';
 
 @Module({
   imports: [
@@ -34,7 +35,12 @@ import { LoggingInterceptor } from '@/interceptors/logging/logging.interceptor';
     }),
   ],
   controllers: [AppController, HealthCheckController],
-  providers: [AppService, { provide: APP_INTERCEPTOR, useClass: LoggingInterceptor }],
+  providers: [AppService, LoggerService],
 })
 export class AppModule {
+  configure(consumer: MiddlewareConsumer) {
+    consumer
+      .apply(TraceIdMiddleware, LoggingMiddleware)
+      .forRoutes({ path: '*', method: RequestMethod.ALL });
+  }
 }
