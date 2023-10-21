@@ -12,7 +12,7 @@ export class PaymentRepository extends Repository<PaymentMethod> {
     userId: PaymentMethod['customerNo'],
   ): Promise<PaymentMethod> {
     return this.createQueryBuilder('payment_method')
-      .where('payment_method.customerNo = :customerNo', { userId })
+      .where('payment_method.customerNo = :userId', { userId })
       .getOne();
   }
 
