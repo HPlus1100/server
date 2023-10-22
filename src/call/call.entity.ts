@@ -19,7 +19,7 @@ export class Call extends BaseEntity {
   @PrimaryGeneratedColumn({ type: 'bigint' })
   no: string;
 
-  @Column()
+  @Column({ type: 'varchar' })
   status: CallStatus;
 
   @Column({ type: 'bigint' })
