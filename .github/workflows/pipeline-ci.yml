@@ -1,11 +1,12 @@
 name: Pipeline CI
 run-name: ${{ github.actor }} running alpha CI 🚀
 on:
-  push:
-    branches: [chore/*, feature/*, fix/*, hotfix/*]
-
+  pull_request:
+    branches:
+      - main
+      - develop
 jobs:
-  Explore-GitHub-Actions:
+  test:
     runs-on: ubuntu-latest
     strategy:
       matrix:
