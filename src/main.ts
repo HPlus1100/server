@@ -1,7 +1,8 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { ConfigService } from '@nestjs/config';
-import { LoggerService } from '@/logger/logger.service';
+import { TraceIdInterceptor } from '@/logger/trace/trace-id.interceptor';
+import { LoggingInterceptor } from '@/logger/logging.interceptor';
 
 interface EnvironmentVariables {
   PORT: number;
@@ -9,7 +10,7 @@ interface EnvironmentVariables {
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
-  app.useLogger(app.get(LoggerService));
+  app.useGlobalInterceptors(new TraceIdInterceptor(), new LoggingInterceptor());
 
   const configService =
     app.get<ConfigService<EnvironmentVariables>>(ConfigService);
