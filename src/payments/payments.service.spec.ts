@@ -5,11 +5,14 @@ import { Payment } from '@payments/entities/payment.entity';
 import { DataSource, Repository } from 'typeorm';
 import { PaymentRepository } from '@payments/payment.repository';
 
-type MockRepository<T = any> = Partial<Record<keyof Repository<T>, jest.Mock>>
+type MockRepository<T = unknown> = Partial<
+  Record<keyof Repository<T>, jest.Mock>
+>;
 
 class MockRepositoryFactory {
-
-  static getMockRepository<T>(type: new (...args: any[]) => T): MockRepository<T> {
+  static getMockRepository<T>(
+    type: new (...args: unknown[]) => T,
+  ): MockRepository<T> {
     const mockRepository: MockRepository<T> = {};
 
     Object.getOwnPropertyNames(Repository.prototype)
@@ -28,7 +31,8 @@ class MockRepositoryFactory {
   }
 }
 
-const mockPaymentRepository = MockRepositoryFactory.getMockRepository(PaymentRepository);
+const mockPaymentRepository =
+  MockRepositoryFactory.getMockRepository(PaymentRepository);
 
 describe('PaymentsService', () => {
   let service: PaymentsService;
@@ -39,7 +43,10 @@ describe('PaymentsService', () => {
       providers: [
         PaymentsService,
         { provide: DataSource, useValue: {} },
-        { provide: getRepositoryToken(Payment), useValue: mockPaymentRepository },
+        {
+          provide: getRepositoryToken(Payment),
+          useValue: mockPaymentRepository,
+        },
       ],
     }).compile();
 
