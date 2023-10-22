@@ -13,9 +13,7 @@ import { BillingModule } from '@billing/billing.module';
 import { PaymentsModule } from '@payments/payments.module';
 import appConfig from '@/config/app.config';
 import databaseConfig from '@/config/database.config';
-import { LoggerService } from '@/logger/logger.service';
-import { TraceIdMiddleware } from '@/logger/trace/trace-id.middleware';
-import { LoggingMiddleware } from '@/logger/logging.middleware';
+
 
 @Module({
   imports: [
@@ -35,12 +33,6 @@ import { LoggingMiddleware } from '@/logger/logging.middleware';
     }),
   ],
   controllers: [AppController, HealthCheckController],
-  providers: [AppService, LoggerService],
+  providers: [AppService],
 })
-export class AppModule {
-  configure(consumer: MiddlewareConsumer) {
-    consumer
-      .apply(TraceIdMiddleware, LoggingMiddleware)
-      .forRoutes({ path: '*', method: RequestMethod.ALL });
-  }
-}
+export class AppModule {}
