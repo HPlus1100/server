@@ -1,6 +1,8 @@
 import { Body, Controller, Get, Param, Post, Query } from '@nestjs/common';
 import { BillingService } from '@billing/billing.service';
 import { PaymentInfoDto } from '@billing/domain/dto/payment-info.dto';
+import { PaymentMethod } from './domain/entity/payment-method.entity';
+import { DailyEarningDTO } from './domain/dto/daily-earning.dto';
 
 @Controller('billing')
 export class BillingController {
@@ -14,7 +16,9 @@ export class BillingController {
    * @returns {status: string; amount: number; ...otherData} - 결제결과, 처리된금x`액
    */
   @Post('process')
-  processBillingPayment(@Body() paymentInfo: PaymentInfoDto) {
+  processBillingPayment(
+    @Body() paymentInfo: PaymentInfoDto,
+  ): Promise<PaymentMethod> {
     const result = this.billingService.getPaymentInfoByAccountNumber(
       paymentInfo['accountNumber'],
     );
@@ -28,7 +32,7 @@ export class BillingController {
    * create
    */
   @Post('payment-info')
-  savePaymentInfo(@Body() PaymentInfoDto: PaymentInfoDto) {
+  savePaymentInfo(@Body() PaymentInfoDto: PaymentInfoDto): string {
     this.billingService.saveUserPaymentInfo(PaymentInfoDto);
     return 'PaymentInfo save controller';
   }
@@ -36,11 +40,11 @@ export class BillingController {
   /**
    * 카드/계좌 정보 조회 EndPoint
    * @param {string} userId - 유저 id
-   * @returns {PaymentInfo} - 조회한 카드 또는 계좌 정보를 반환.
+   * @returns {Promise<PaymentMethod>} - 조회한 카드 또는 계좌 정보를 반환.
    * create
    */
   @Get('payment-info/:userId')
-  selectPaymentInfo(@Param('userId') userId: string) {
+  selectPaymentInfo(@Param('userId') userId: string): Promise<PaymentMethod> {
     const result = this.billingService.getPaymentInfoByUserId(userId);
     return result;
   }
@@ -49,14 +53,14 @@ export class BillingController {
    * 당일 수익 조회 EndPoint
    * @param {string} userId - 유저 id
    * @Param {Date} earningsDates - 조회 날짜
-   * @returns {DailyEarnings} - 조회한 당일 수익 정보
+   * @returns {Promise<DailyEarningDTO>} - 조회한 당일 수익 정보
    * -> selectMany
    */
   @Get('earnings-today/:userId')
   async getEarningsToday(
     @Param('userId') userId: string,
     @Query('earningDate') earningsDates: string,
-  ) {
+  ): Promise<DailyEarningDTO> {
     const result = await this.billingService.getTodayEarnings(
       userId,
       earningsDates,

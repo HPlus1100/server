@@ -38,7 +38,7 @@ import { LoggingMiddleware } from '@/logger/logging.middleware';
   providers: [AppService, LoggerService],
 })
 export class AppModule {
-  configure(consumer: MiddlewareConsumer) {
+  configure(consumer: MiddlewareConsumer): void {
     consumer
       .apply(TraceIdMiddleware, LoggingMiddleware)
       .forRoutes({ path: '*', method: RequestMethod.ALL });

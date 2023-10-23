@@ -2,7 +2,7 @@ import { BadRequestException, PipeTransform } from '@nestjs/common';
 import { TerminateCallDto } from '../dto/request/terminateCall.dto';
 
 export class TerminateCallValidationPipe implements PipeTransform {
-  transform(value: TerminateCallDto) {
+  transform(value: TerminateCallDto): TerminateCallDto {
     if (!this.isTimeValid(value.arrivalTime)) {
       throw new BadRequestException(
         `"${value.arrivalTime}" is an invalid arrival time`,
@@ -11,7 +11,7 @@ export class TerminateCallValidationPipe implements PipeTransform {
     return value;
   }
 
-  private isTimeValid(arrivalTime: Date) {
+  private isTimeValid(arrivalTime: Date): boolean {
     const now = new Date(Date.now());
     const arrival = new Date(arrivalTime);
 

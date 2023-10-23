@@ -61,7 +61,7 @@ export class BillingService {
 
   async getPaymentInfoByAccountNumber(
     accountNumber: PaymentInfoDto['accountNumber'],
-  ) {
+  ): Promise<PaymentMethod> {
     const result = await this.paymentRepository.getPaymentInfoByAccountNumber(
       accountNumber,
     );
