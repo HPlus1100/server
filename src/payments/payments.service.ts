@@ -10,9 +10,8 @@ export class PaymentsService {
   constructor(
     @InjectRepository(Payment)
     private readonly paymentRepository: PaymentRepository,
-  ) {
-  }
-  
+  ) {}
+
   create(createPaymentDto: CreatePaymentDto) {
     return 'This action adds a new payment';
   }

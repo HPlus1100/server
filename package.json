@@ -7,6 +7,7 @@
   "scripts": {
     "build": "nest build",
     "format": "prettier --cache --write \"src/**/*.ts\" \"test/**/*.ts\"",
+    "format:check": "prettier --check \"src/**/*.ts\" \"test/**/*.ts\" ",
     "start": "nest start",
     "start:alpha": "cross-env NODE_ENV=alpha nest start",
     "start:dev": "nest start --watch",
