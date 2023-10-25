@@ -1,5 +1,5 @@
 # Node.js 20 이미지를 기반으로 사용
-FROM node:18-alpine
+FROM node:20-alpine
 
 # 작업 디렉토리를 설정 - 컨테이너 내부 경로
 WORKDIR  /usr/src/app
@@ -21,5 +21,5 @@ EXPOSE 3000
 
 # 실행
 
-CMD [ "yarn", "run", "start" ]
+CMD [ "node", "dist/main" ]
 
