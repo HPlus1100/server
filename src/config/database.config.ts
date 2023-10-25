@@ -12,9 +12,11 @@ export default registerAs('database', async () => {
 
   const baseSchema = Joi.object({
     host: Joi.alternatives([
-      Joi.string().regex(
-        /^[a-z0-9-]+\.([a-z0-9-]+)\.(ap-northeast-2)\.rds\.amazonaws\.com$/,
-      ),
+      process.env.NODE_ENV === 'production'
+        ? Joi.string().regex(
+            /^[a-z0-9-]+\.([a-z0-9-]+)\.(ap-northeast-2)\.rds\.amazonaws\.com$/,
+          )
+        : Joi.valid('localhost'),
     ]).required(),
     port: Joi.number().required(),
     username: Joi.string().required(),

@@ -7,7 +7,7 @@ export class LoggerService {
   private readonly logger: winston.Logger;
 
   constructor() {
-    const isDevelopment = process.env.NODE_ENV === 'development';
+    const isDevelopment = process.env.NODE_ENV !== 'production';
 
     const format = winston.format.combine(
       winston.format.colorize(),
