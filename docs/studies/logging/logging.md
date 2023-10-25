@@ -1,4 +1,4 @@
-cs# Logging
+# Logging
 
 - 학습목표
   - 로깅에 대한 전반적인 사전 학습
