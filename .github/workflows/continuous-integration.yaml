@@ -4,6 +4,8 @@ on:
   push:
     branches: [chore/*, feature/*, fix/*, hotfix/*]
 
+env:
+  KAKAO_REST_API_KEY: ${{ secrets.KAKAO_REST_API_KEY }}
 jobs:
   Explore-GitHub-Actions:
     runs-on: ubuntu-latest
