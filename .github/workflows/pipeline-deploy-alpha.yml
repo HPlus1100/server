@@ -5,10 +5,6 @@ on: # 언제 실행되는지 정의
     branches:
       - release-alpha
 
-env: # 환경 설정 나중에 workflow 내에서 ${{ env.ECS_SERVICE }} 로 접근 가능
-  AWS_REGION: ap-northeast-2 # 서울 서버
-  ECR_REPOSITORY: registry1100 # 생성한 리포지토리 명
-
 jobs: # 하나의 처리 단위 적어도 하나의 작업 필요, 기본적으로 동시에 실행
   deploy: # job 명
     name: Deploy
@@ -24,7 +20,7 @@ jobs: # 하나의 처리 단위 적어도 하나의 작업 필요, 기본적으�
         with:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          aws-region: ${{ env.AWS_REGION }}
+          aws-region: ${{ vars.AWS_REGION }}
 
       - name: Login to Amazon ECR # AWS 로그인
         id: login-ecr # ID로 작업 세부내용간 맵핑 가능
@@ -34,7 +30,8 @@ jobs: # 하나의 처리 단위 적어도 하나의 작업 필요, 기본적으�
         id: build-image
         env:
           ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }} # login-ecr 의 결과물의 registry
-          IMAGE_TAG: ${{ github.sha }}
+          ECR_REPOSITORY: ${{ vars.ECR_REPOSITORY }}
+          IMAGE_TAG: latest
         run: |
           docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
           docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
@@ -44,14 +41,25 @@ jobs: # 하나의 처리 단위 적어도 하나의 작업 필요, 기본적으�
         id: setting-task-definition
         uses: aws-actions/amazon-ecs-render-task-definition@v1
         with:
-          task-definition: task-definition.json
-          container-name: server1100
+          task-definition: task_definition.json
+          container-name: 1100server
           image: ${{ steps.build-image.outputs.image }}
+          environment-variables: |
+            CLOUDWATCH_GROUP_NAME=server-logs
+            CLOUDWATCH_STREAM_NAME=server-logs-production
+            AWS_ACCESS_KEY_ID=${{ secrets.AWS_ACCESS_KEY_ID }}
+            AWS_SECRET_ACCESS_KEY=${{ secrets.AWS_SECRET_ACCESS_KEY }}
+            AWS_REGION=${{ vars.AWS_REGION }}
+            DB_HOST=${{ secrets.DB_HOST }}
+            DB_USERNAME=${{ secrets.DB_USERNAME }}
+            DB_PASSWORD=${{ secrets.DB_PASSWORD }}
+            DB_DATABASE=${{ secrets.DB_DATABASE }}
+            DB_PORT=${{ secrets.DB_PORT }}
 
       - name: Deploy Amazon ECS task definition
         uses: aws-actions/amazon-ecs-deploy-task-definition@v1
         with:
           task-definition: ${{ steps.setting-task-definition.outputs.task-definition }}
-          service: server1100_service
-          cluster: server1100_cluster
-          wait-for-service-stability: true
+          service: ${{ vars.ECS_SERVICE }}
+          cluster: ${{ vars.ECS_CLUSTER }}
+          wait-for-service-stability: false

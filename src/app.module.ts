@@ -1,4 +1,4 @@
-import { MiddlewareConsumer, Module, RequestMethod } from '@nestjs/common';
+import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { HealthCheckController } from './health-check/health-check.controller';
@@ -13,7 +13,6 @@ import { BillingModule } from '@billing/billing.module';
 import { PaymentsModule } from '@payments/payments.module';
 import appConfig from '@/config/app.config';
 import databaseConfig from '@/config/database.config';
-
 
 @Module({
   imports: [

@@ -10,8 +10,8 @@ export class TypeOrmConfigService implements TypeOrmOptionsFactory {
     @Inject(databaseConfig.KEY)
     private readonly databaseConfiguration: ConfigType<typeof databaseConfig>,
     @Inject(appConfig.KEY)
-    private readonly appConfiguration: ConfigType<typeof appConfig>) {
-  }
+    private readonly appConfiguration: ConfigType<typeof appConfig>,
+  ) {}
 
   createTypeOrmOptions(): TypeOrmModuleOptions {
     return {

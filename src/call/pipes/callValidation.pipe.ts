@@ -4,17 +4,15 @@ import { TaxiType } from '../types/taxi';
 export class CallValidationPipe implements PipeTransform {
   readonly TaxiTypes: Array<TaxiType> = ['NORMAL', 'LUXURY', 'DELUXE'];
 
-  transform(value) {
-    if (!this.isTaxiTypeValid(value.taxiType)) {
-      throw new BadRequestException(
-        `"${value.taxiType}" is an invalid taxi type`,
-      );
+  transform(value: { taxiType: string }): { taxiType: TaxiType } {
+    const taxiType = value.taxiType.toUpperCase() as TaxiType;
+    if (!this.isTaxiTypeValid(taxiType)) {
+      throw new BadRequestException(`"${taxiType}" is an invalid taxi type`);
     }
-    return value;
+    return { taxiType };
   }
 
-  private isTaxiTypeValid(type) {
-    const idx = this.TaxiTypes.indexOf(type);
-    return idx !== -1;
+  private isTaxiTypeValid(type: TaxiType): boolean {
+    return this.TaxiTypes.includes(type);
   }
 }

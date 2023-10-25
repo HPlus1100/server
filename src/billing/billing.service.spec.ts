@@ -5,13 +5,19 @@ import { DailyEarningsRepository } from '@billing/repository/daily-earning.repos
 import { PaymentInfoDto } from '@billing/domain/dto/payment-info.dto';
 import { PaymentType } from '@billing/domain/type/billing.enum';
 
-const mockPaymentRepository = () => ({
+const mockPaymentRepository = (): {
+  save: jest.Mock;
+  getPaymentInfoByUserId: jest.Mock;
+  getPaymentInfoByAccountNumber: jest.Mock;
+} => ({
   save: jest.fn(),
   getPaymentInfoByUserId: jest.fn(),
   getPaymentInfoByAccountNumber: jest.fn(),
 });
 
-const mockDailyEarningsRepository = () => ({
+const mockDailyEarningsRepository = (): {
+  getDailyEarningsForUser: jest.Mock;
+} => ({
   getDailyEarningsForUser: jest.fn(),
 });
 

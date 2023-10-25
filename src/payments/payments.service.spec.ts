@@ -5,11 +5,13 @@ import { Payment } from '@payments/entities/payment.entity';
 import { DataSource, Repository } from 'typeorm';
 import { PaymentRepository } from '@payments/payment.repository';
 
-type MockRepository<T = any> = Partial<Record<keyof Repository<T>, jest.Mock>>;
+type MockRepository<T = unknown> = Partial<
+  Record<keyof Repository<T>, jest.Mock>
+>;
 
 class MockRepositoryFactory {
   static getMockRepository<T>(
-    type: new (...args: any[]) => T,
+    type: new (...args: unknown[]) => T,
   ): MockRepository<T> {
     const mockRepository: MockRepository<T> = {};
 

@@ -1,7 +1,7 @@
 import { newDb } from 'pg-mem';
 import { DataSource } from 'typeorm';
 
-const setupDataSource = async () => {
+const setupDataSource = async (): Promise<DataSource> => {
   const db = newDb({
     autoCreateForeignKeyIndices: true,
   });
