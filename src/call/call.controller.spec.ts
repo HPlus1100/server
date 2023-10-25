@@ -4,16 +4,21 @@ import { CallService } from './call.service';
 import { CallRepository } from './call.repository';
 import { DataSource } from 'typeorm';
 import { dataSourceMockFactory } from '../../test/mock/dataSourceMockFactory';
+import { PathApiRepository } from '@/externalApi/path-api.repository';
+import { ConfigModule } from '@nestjs/config';
+import { HttpModule } from '@nestjs/axios';
 
 describe('CallController', () => {
   let controller: CallController;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
+      imports: [ConfigModule.forRoot(), HttpModule],
       controllers: [CallController],
       providers: [
         CallService,
         CallRepository,
+        PathApiRepository,
         { provide: DataSource, useFactory: dataSourceMockFactory },
       ],
     }).compile();

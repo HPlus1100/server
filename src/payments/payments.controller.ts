@@ -1,4 +1,4 @@
-import { Controller } from '@nestjs/common';
+import { Controller, Get } from '@nestjs/common';
 import { PaymentsService } from './payments.service';
 
 @Controller('payments')
@@ -10,10 +10,10 @@ export class PaymentsController {
   //   return this.paymentsService.create(createPaymentDto);
   // }
 
-  // @Get()
-  // findAll() {
-  //   return this.paymentsService.findAll();
-  // }
+  @Get()
+  findAll() {
+    return this.paymentsService.findAll();
+  }
 
   // @Get(':id')
   // findOne(@Param('id') id: string) {

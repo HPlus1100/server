@@ -13,10 +13,14 @@ import { CallRepository } from './call.repository';
 import { TaxiInfo } from './types/taxi';
 import { Call } from './call.entity';
 import { plainToInstance } from 'class-transformer';
+import { PathApiRepository } from '@/externalApi/path-api.repository';
 
 @Injectable()
 export class CallService {
-  constructor(private callRepository: CallRepository) {}
+  constructor(
+    private callRepository: CallRepository,
+    private pathApiRepository: PathApiRepository,
+  ) {}
 
   // @UsePipes(ValidationPipe)
   // async getAllCalls(): Promise<Call[]> {
@@ -37,7 +41,7 @@ export class CallService {
   // }
 
   async createCall(createCallDto: CreateCallDto): Promise<Call> {
-    const { userId, taxiType } = createCallDto;
+    const { userId, taxiType, departure, arrival } = createCallDto;
     //step1: 드라이버 리스트 조회
     //getDtriverList(taxiType);
     const availableDrivers = [
@@ -72,11 +76,23 @@ export class CallService {
       type: typeMatchedDrivers[0].type as TaxiInfo['type'],
     };
 
-    //step3: 매칭 정보 저장
+    //step3: 외부 api 호출
+    const pathInfo = await this.pathApiRepository.getPathInfo({
+      origin: {
+        x: departure.lat,
+        y: departure.lng,
+      },
+      destination: {
+        x: arrival.lat,
+        y: arrival.lng,
+      },
+    });
+
+    //step4: 매칭 정보 저장
 
     const departureTime = new Date();
     const arrivalTime = new Date(
-      departureTime.setHours(departureTime.getHours() + 1),
+      departureTime.getTime() + pathInfo.duration * 1000,
     );
 
     //나중에 component로 분리
@@ -85,23 +101,15 @@ export class CallService {
       driverNo: matchedDriver.driverNo,
       status: 'COMPLETE',
       taxi: matchedDriver,
-      departure: {
-        address: '서울시 강남구',
-        lat: 37.123,
-        lng: 127.123,
-      },
-      arrival: {
-        address: '서울시 강북구',
-        lat: 36.555,
-        lng: 122.555,
-      },
-      fare: 10000,
+      departure,
+      arrival,
+      fare: pathInfo.fare,
       departureTime: departureTime,
       arrivalTime: arrivalTime,
     });
     const savedCall = await this.callRepository.save(call);
 
-    //step4: 매칭 정보 리턴(유저용)
+    //step5: 매칭 정보 리턴(유저용)
     return savedCall;
   }
 
