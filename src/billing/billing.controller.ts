@@ -3,6 +3,7 @@ import { BillingService } from '@billing/billing.service';
 import { PaymentInfoDto } from '@billing/domain/dto/payment-info.dto';
 import { PaymentMethod } from './domain/entity/payment-method.entity';
 import { DailyEarningDTO } from './domain/dto/daily-earning.dto';
+import { PaymentResponse } from '@billing/domain/type/payment-response.type';
 
 @Controller('billing')
 export class BillingController {
@@ -16,13 +17,18 @@ export class BillingController {
    * @returns {status: string; amount: number; ...otherData} - 결제결과, 처리된금x`액
    */
   @Post('process')
-  processBillingPayment(
+  async processBillingPayment(
     @Body() paymentInfo: PaymentInfoDto,
-  ): Promise<PaymentMethod> {
-    const result = this.billingService.getPaymentInfoByAccountNumber(
-      paymentInfo['accountNumber'],
-    );
-    return result;
+    @Body('amount') amount: string,
+  ): Promise<PaymentResponse> {
+    // 1.3초 대기
+    await new Promise((resolve) => setTimeout(resolve, 1300));
+
+    return {
+      amount: amount,
+      method: paymentInfo.type,
+      status: 'success',
+    };
   }
 
   /**
