@@ -1,4 +1,4 @@
-import {PaymentType} from "@billing/domain/type/billing.enum";
+import { PaymentType } from '@billing/domain/type/billing.enum';
 
 export type PaymentResponse = {
   amount: string;
