@@ -7,6 +7,7 @@ import { dataSourceMockFactory } from '../../test/mock/dataSourceMockFactory';
 import { PathApiRepository } from '@/externalApi/path-api.repository';
 import { ConfigModule } from '@nestjs/config';
 import { HttpModule } from '@nestjs/axios';
+import { LoggerService } from '@/logger/logger.service';
 
 describe('CallController', () => {
   let controller: CallController;
@@ -19,6 +20,7 @@ describe('CallController', () => {
         CallService,
         CallRepository,
         PathApiRepository,
+        LoggerService,
         { provide: DataSource, useFactory: dataSourceMockFactory },
       ],
     }).compile();
