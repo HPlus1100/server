@@ -7,9 +7,10 @@ import { Call } from './call.entity';
 import { PathApiRepository } from '@/externalApi/path-api.repository';
 import { HttpModule } from '@nestjs/axios';
 import { ConfigModule } from '@nestjs/config';
+import { LoggerService } from '@/logger/logger.service';
 @Module({
   imports: [TypeOrmModule.forFeature([Call]), ConfigModule, HttpModule],
   controllers: [CallController],
-  providers: [CallService, CallRepository, PathApiRepository],
+  providers: [CallService, CallRepository, PathApiRepository, LoggerService],
 })
 export class CallModule {}
