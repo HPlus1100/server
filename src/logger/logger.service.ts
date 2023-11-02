@@ -35,6 +35,9 @@ export class LoggerService {
 
     this.logger.add(cloudWatchHelper);
   }
+  logCircuitBreaker(message: string): void {
+    this.logger.info(message);
+  }
 
   log(message: string, traceId: string): void {
     this.logger.info(`${message} [TraceID: ${traceId}]`);
